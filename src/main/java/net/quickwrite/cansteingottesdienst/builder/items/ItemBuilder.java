@@ -13,28 +13,35 @@ import org.bukkit.inventory.meta.SkullMeta;
 
 import java.util.List;
 
-public class ItemCreator {
+public class ItemBuilder {
 
     private final ItemStack itemStack;
 
-    public ItemCreator(Material material){
+    public ItemBuilder(Material material){
         this.itemStack = new ItemStack(material);
     }
 
-    public ItemCreator(Material material, int subID){
+    public ItemBuilder(Material material, int subID){
         this.itemStack = new ItemStack(material, 1 , (short) subID);
     }
 
-    public ItemCreator(ItemStack itemStack) {
+    public ItemBuilder(ItemStack itemStack) {
         this.itemStack = itemStack;
     }
 
-    public ItemCreator setAmount(int amount){
+    public ItemBuilder setCustomModelData(int value){
+        ItemMeta meta = itemStack.getItemMeta();
+        meta.setCustomModelData(value);
+        itemStack.setItemMeta(meta);
+        return this;
+    }
+
+    public ItemBuilder setAmount(int amount){
         this.itemStack.setAmount(amount);
         return this;
     }
 
-    public ItemCreator createHeadItem(Player p){
+    public ItemBuilder createHeadItem(Player p){
         if(this.itemStack.getType() == Material.PLAYER_HEAD) {
             SkullMeta skullMeta = (SkullMeta) itemStack.getItemMeta();
             skullMeta.setOwner(p.getName());
@@ -45,7 +52,7 @@ public class ItemCreator {
 
     }
 
-    public ItemCreator setDisplayName(String name){
+    public ItemBuilder setDisplayName(String name){
         ItemMeta itemMeta = this.itemStack.getItemMeta();
         if (itemMeta != null) {
             itemMeta.setDisplayName(name);
@@ -54,7 +61,7 @@ public class ItemCreator {
         return this;
     }
 
-    public ItemCreator addItemFlags(ItemFlag... itemFlags){
+    public ItemBuilder addItemFlags(ItemFlag... itemFlags){
         ItemMeta itemMeta = this.itemStack.getItemMeta();
         if (itemMeta != null) {
             itemMeta.addItemFlags(itemFlags);
@@ -63,7 +70,7 @@ public class ItemCreator {
         return this;
     }
 
-    public ItemCreator setLore(List<String> list){
+    public ItemBuilder setLore(List<String> list){
         ItemMeta itemMeta = this.itemStack.getItemMeta();
         if (itemMeta != null) {
             itemMeta.setLore(list);
@@ -72,7 +79,7 @@ public class ItemCreator {
         return this;
     }
 
-    public ItemCreator addEnchantment(Enchantment enchantment, int level){
+    public ItemBuilder addEnchantment(Enchantment enchantment, int level){
         ItemMeta itemMeta = this.itemStack.getItemMeta();
         if (itemMeta != null) {
             itemMeta.addEnchant(enchantment, level, true);
@@ -81,7 +88,7 @@ public class ItemCreator {
         return this;
     }
 
-    public ItemCreator setDamage(int damage){
+    public ItemBuilder setDamage(int damage){
         ItemMeta meta = this.itemStack.getItemMeta();
         if(meta != null) {
             if (meta instanceof Damageable) {
@@ -92,7 +99,7 @@ public class ItemCreator {
         return this;
     }
 
-    public ItemCreator setOwner(String name){
+    public ItemBuilder setOwner(String name){
         ItemMeta itemMeta = this.itemStack.getItemMeta();
         if(itemMeta != null) {
             if (itemMeta instanceof SkullMeta) {
@@ -104,7 +111,7 @@ public class ItemCreator {
         return this;
     }
 
-    public ItemCreator setColor(Color color){
+    public ItemBuilder setColor(Color color){
         ItemMeta itemMeta = this.itemStack.getItemMeta();
         if(itemMeta != null) {
             if (itemMeta instanceof LeatherArmorMeta) {
@@ -116,7 +123,7 @@ public class ItemCreator {
         return this;
     }
 
-    public ItemCreator setUnbreakable(){
+    public ItemBuilder setUnbreakable(){
         ItemMeta itemMeta = this.itemStack.getItemMeta();
         if (itemMeta != null) {
             itemMeta.setUnbreakable(true);
@@ -125,7 +132,7 @@ public class ItemCreator {
         return this;
     }
 
-    public ItemStack getItemStack(){
+    public ItemStack build(){
         return this.itemStack;
     }
 }
