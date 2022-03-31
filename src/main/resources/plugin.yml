@@ -1,0 +1,5 @@
+name: CansteinGottesdienst
+version: '${project.version}'
+main: net.quickwrite.cansteingottesdienst.CansteinGottesdienst
+api-version: 1.17
+authors: [ QuickWrite, Hasenzahn1 ]
