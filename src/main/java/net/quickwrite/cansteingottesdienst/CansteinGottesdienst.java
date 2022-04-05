@@ -20,9 +20,13 @@ public final class CansteinGottesdienst extends JavaPlugin {
     private RaceGame raceGame;
 
     @Override
+    public void onLoad() {
+        initializeWorldGuard();
+    }
+
+    @Override
     public void onEnable() {
         instance = this;
-        initializeWorldGuard();
     }
 
     @Override
