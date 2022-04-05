@@ -5,20 +5,24 @@ import com.sk89q.worldguard.protection.flags.Flag;
 import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.flags.registry.FlagConflictException;
 import com.sk89q.worldguard.protection.flags.registry.FlagRegistry;
+import net.quickwrite.cansteingottesdienst.builder.minigame.RaceGame;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import javax.naming.spi.StateFactory;
 
 public final class CansteinGottesdienst extends JavaPlugin {
 
+    private static CansteinGottesdienst instance;
     public static StateFlag INFINITE_CROPS;
+    public static String PREFIX = "[Gottesdienst] ";
 
-    @Override
-    public void onLoad() {
-        initializeWorldGuard();
-    }
+    private RaceGame raceGame;
 
     @Override
     public void onEnable() {
-        // Plugin startup logic
+        instance = this;
+        initializeWorldGuard();
     }
 
     @Override
@@ -44,8 +48,40 @@ public final class CansteinGottesdienst extends JavaPlugin {
                 // types don't match - this is bad news! some other plugin conflicts with you
                 // hopefully this never actually happens
                 throw new RuntimeException("Somehow the 'infinite-crops' flag cannot be initialized!\n" +
-                                            "Check if another plugin is conflicting with the flags.");
+                        "Check if another plugin is conflicting with the flags.");
             }
         }
+    }
+
+    public StateFlag addFlag(FlagRegistry registry, String name, boolean def){
+        try{
+            StateFlag flag = new StateFlag(name, def);
+            registry.register(flag);
+            return flag;
+        }catch (FlagConflictException e){
+            Flag<?> existing = registry.get(name);
+            if(existing instanceof StateFlag){
+                return (StateFlag) existing;
+            }else{
+                throw new RuntimeException("Somehow the '" + name + "' flag cannot be initialized!\n" +
+                        "Check if another plugin is conflicting with the flags.");
+            }
+        }
+    }
+
+    public void initGame(Player player){
+        if(raceGame == null) {
+            raceGame.stop();
+        }
+        raceGame = new RaceGame(player.getWorld());
+        raceGame.start();
+    }
+
+    public RaceGame getRaceGame() {
+        return raceGame;
+    }
+
+    public static CansteinGottesdienst getInstance() {
+        return instance;
     }
 }
