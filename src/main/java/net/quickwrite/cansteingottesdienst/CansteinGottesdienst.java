@@ -31,6 +31,7 @@ public final class CansteinGottesdienst extends JavaPlugin {
         getCommand("rlgl").setTabCompleter(new RedLightGreenLightTabCompleter());
     }
 
+
     @Override
     public void onLoad(){
         initializeWorldGuard();
