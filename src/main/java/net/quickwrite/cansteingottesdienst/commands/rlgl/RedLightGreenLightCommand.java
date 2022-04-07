@@ -39,12 +39,12 @@ public class RedLightGreenLightCommand implements CommandExecutor {
                             p.sendMessage(CansteinGottesdienst.PREFIX + "§cCan't perform game setup as there is a game running");
                         } else {
                             RedLightGreenLightGame.setSettings(p);
-                            p.sendMessage(CansteinGottesdienst.PREFIX + "§aThe game has been set up. Use §6/rlgl start §ato start it");
+                            p.sendMessage(CansteinGottesdienst.PREFIX + "§aThe game has been set up. Use §6/" + command.getName() + " start §ato start it");
                         }
                     }else if (args[0].equalsIgnoreCase("help")){
                         sendHelp(p);
                     }else{
-                        p.sendMessage(CansteinGottesdienst.PREFIX + "§cUse §6/rlgl <start/stop/setup/help>");
+                        p.sendMessage(CansteinGottesdienst.PREFIX + "§cUse §6/" + command.getName() + " <start/stop/setup/help>");
                     }
                 }else{
                     sendHelp(p);

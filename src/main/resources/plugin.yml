@@ -8,3 +8,8 @@ depend: [ WorldGuard ]
 
 commands:
   rlgl:
+    description: "RLGL"
+    usage: /rlgl <start/stop/setup>
+  getCustomBlock:
+    description: "Get a custom block"
+    usage: /getCustomBlock <id>

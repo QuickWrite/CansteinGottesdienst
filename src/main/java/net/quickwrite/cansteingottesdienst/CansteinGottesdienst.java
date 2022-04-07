@@ -6,9 +6,14 @@ import com.sk89q.worldguard.protection.flags.Flag;
 import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.flags.registry.FlagConflictException;
 import com.sk89q.worldguard.protection.flags.registry.FlagRegistry;
+import net.quickwrite.cansteingottesdienst.blocks.Blocks;
+import net.quickwrite.cansteingottesdienst.blocks.TestBlock;
+import net.quickwrite.cansteingottesdienst.commands.rlgl.GetCustomBlockCommand;
 import net.quickwrite.cansteingottesdienst.commands.rlgl.RedLightGreenLightCommand;
+import net.quickwrite.cansteingottesdienst.listener.block.BlockInteractListener;
 import net.quickwrite.cansteingottesdienst.rlgl.RedLightGreenLightGame;
 import net.quickwrite.cansteingottesdienst.rlgl.RedLightGreenLightSettings;
+import net.quickwrite.cansteingottesdienst.tabcomplete.GetCustomBlockTabCompleter;
 import net.quickwrite.cansteingottesdienst.tabcomplete.RedLightGreenLightTabCompleter;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
@@ -20,9 +25,11 @@ import org.bukkit.plugin.java.JavaPlugin;
 public final class CansteinGottesdienst extends JavaPlugin {
 
     private static CansteinGottesdienst instance;
+    public static Blocks BLOCKS;
 
     public static WorldGuardPlugin WORLDGUARD_PLUGIN;
     public static StateFlag INFINITE_CROPS;
+    public static StateFlag CUSTOM_BLOCKS;
     public static String PREFIX = "[Gottesdienst] ";
     public static final String PATH = "canstein";
 
@@ -38,16 +45,27 @@ public final class CansteinGottesdienst extends JavaPlugin {
         instance = this;
         ConfigurationSerialization.registerClass(RedLightGreenLightSettings.class);
 
+        // registration of custom Blocks
+        BLOCKS = new Blocks();
+        BLOCKS.register(new TestBlock());
+
+        // register Commands
         PluginCommand rlglCommand = getCommand("rlgl");
         assert rlglCommand != null;
         rlglCommand.setExecutor(new RedLightGreenLightCommand());
         rlglCommand.setTabCompleter(new RedLightGreenLightTabCompleter());
+
+        PluginCommand getCustomBlockCommand = getCommand("getCustomBlock");
+        assert getCustomBlockCommand != null;
+        getCustomBlockCommand.setExecutor(new GetCustomBlockCommand());
+        getCustomBlockCommand.setTabCompleter(new GetCustomBlockTabCompleter());
 
         // This can be cast as every WorldGuardPlugin is a JavaPlugin that is a Plugin
         WORLDGUARD_PLUGIN = (WorldGuardPlugin) Bukkit.getPluginManager().getPlugin("WorldGuard");
 
         // register EventListener
         getServer().getPluginManager().registerEvents(new BlockListener(), this);
+        getServer().getPluginManager().registerEvents(new BlockInteractListener(), this);
     }
 
     @Override
@@ -59,6 +77,7 @@ public final class CansteinGottesdienst extends JavaPlugin {
         FlagRegistry registry = WorldGuard.getInstance().getFlagRegistry();
 
         INFINITE_CROPS = addFlag(registry, "infinite-crops", false);
+        CUSTOM_BLOCKS = addFlag(registry, "custom-blocks", false);
     }
 
     public StateFlag addFlag(FlagRegistry registry, String name, boolean def){
