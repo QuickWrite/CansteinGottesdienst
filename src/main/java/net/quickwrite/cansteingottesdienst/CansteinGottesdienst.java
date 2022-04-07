@@ -1,6 +1,7 @@
 package net.quickwrite.cansteingottesdienst;
 
 import com.sk89q.worldguard.WorldGuard;
+import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.flags.Flag;
 import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.flags.registry.FlagConflictException;
@@ -9,13 +10,18 @@ import net.quickwrite.cansteingottesdienst.commands.rlgl.RedLightGreenLightComma
 import net.quickwrite.cansteingottesdienst.rlgl.RedLightGreenLightGame;
 import net.quickwrite.cansteingottesdienst.rlgl.RedLightGreenLightSettings;
 import net.quickwrite.cansteingottesdienst.tabcomplete.RedLightGreenLightTabCompleter;
+import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
+import net.quickwrite.cansteingottesdienst.listener.BlockListener;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class CansteinGottesdienst extends JavaPlugin {
 
     private static CansteinGottesdienst instance;
+
+    public static WorldGuardPlugin WORLDGUARD_PLUGIN;
     public static StateFlag INFINITE_CROPS;
     public static String PREFIX = "[Gottesdienst] ";
     public static final String PATH = "canstein";
@@ -23,18 +29,25 @@ public final class CansteinGottesdienst extends JavaPlugin {
     private RedLightGreenLightGame raceGame;
 
     @Override
+    public void onLoad() {
+        initializeWorldGuard();
+    }
+
+    @Override
     public void onEnable() {
         instance = this;
         ConfigurationSerialization.registerClass(RedLightGreenLightSettings.class);
 
-        getCommand("rlgl").setExecutor(new RedLightGreenLightCommand());
-        getCommand("rlgl").setTabCompleter(new RedLightGreenLightTabCompleter());
-    }
+        PluginCommand rlglCommand = getCommand("rlgl");
+        assert rlglCommand != null;
+        rlglCommand.setExecutor(new RedLightGreenLightCommand());
+        rlglCommand.setTabCompleter(new RedLightGreenLightTabCompleter());
 
+        // This can be cast as every WorldGuardPlugin is a JavaPlugin that is a Plugin
+        WORLDGUARD_PLUGIN = (WorldGuardPlugin) Bukkit.getPluginManager().getPlugin("WorldGuard");
 
-    @Override
-    public void onLoad(){
-        initializeWorldGuard();
+        // register EventListener
+        getServer().getPluginManager().registerEvents(new BlockListener(), this);
     }
 
     @Override
