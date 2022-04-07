@@ -10,8 +10,8 @@ public class RedLightGreenLightSettings implements ConfigurationSerializable {
 
     private Direction direction;
     private int x, z;
-    private String titleRun, titleHalt, sound;
-    private int minTime, maxTime, haltTime;
+    private final String titleRun, titleHalt, sound;
+    private final int minTime, maxTime, haltTime;
 
     public RedLightGreenLightSettings(Direction d, int x, int z){
         this.direction = d;
