@@ -3,6 +3,8 @@ package net.quickwrite.cansteingottesdienst;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import net.quickwrite.cansteingottesdienst.blocks.Blocks;
 import net.quickwrite.cansteingottesdienst.blocks.TestBlock;
+import net.quickwrite.cansteingottesdienst.builder.recipes.FurnaceRecipeBuilder;
+import net.quickwrite.cansteingottesdienst.builder.recipes.RecipeBuilder;
 import net.quickwrite.cansteingottesdienst.commands.rlgl.GetCustomBlockCommand;
 import net.quickwrite.cansteingottesdienst.commands.rlgl.RedLightGreenLightCommand;
 import net.quickwrite.cansteingottesdienst.listener.block.BlockInteractListener;
@@ -16,6 +18,7 @@ import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import net.quickwrite.cansteingottesdienst.listener.BlockListener;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Recipe;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class CansteinGottesdienst extends JavaPlugin {
