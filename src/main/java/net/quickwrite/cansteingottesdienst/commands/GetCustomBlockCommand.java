@@ -1,4 +1,4 @@
-package net.quickwrite.cansteingottesdienst.commands.rlgl;
+package net.quickwrite.cansteingottesdienst.commands;
 
 import net.quickwrite.cansteingottesdienst.CansteinGottesdienst;
 import net.quickwrite.cansteingottesdienst.blocks.CustomBlock;

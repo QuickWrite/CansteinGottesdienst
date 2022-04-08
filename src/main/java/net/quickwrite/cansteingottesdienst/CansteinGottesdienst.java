@@ -5,7 +5,7 @@ import net.quickwrite.cansteingottesdienst.blocks.Blocks;
 import net.quickwrite.cansteingottesdienst.blocks.TestBlock;
 import net.quickwrite.cansteingottesdienst.builder.recipes.FurnaceRecipeBuilder;
 import net.quickwrite.cansteingottesdienst.builder.recipes.RecipeBuilder;
-import net.quickwrite.cansteingottesdienst.commands.rlgl.GetCustomBlockCommand;
+import net.quickwrite.cansteingottesdienst.commands.GetCustomBlockCommand;
 import net.quickwrite.cansteingottesdienst.commands.rlgl.RedLightGreenLightCommand;
 import net.quickwrite.cansteingottesdienst.listener.block.BlockInteractListener;
 import net.quickwrite.cansteingottesdienst.rlgl.RedLightGreenLightGame;
