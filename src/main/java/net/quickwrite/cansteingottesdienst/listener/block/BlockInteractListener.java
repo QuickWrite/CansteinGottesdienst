@@ -4,6 +4,7 @@ import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import net.quickwrite.cansteingottesdienst.CansteinGottesdienst;
 import net.quickwrite.cansteingottesdienst.blocks.CustomBlock;
 import net.quickwrite.cansteingottesdienst.util.WorlGuardUtil;
+import net.quickwrite.cansteingottesdienst.util.storage.Flags;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -18,7 +19,7 @@ public class BlockInteractListener implements Listener {
         if(event.getClickedBlock() == null) return;
 
         ApplicableRegionSet set = WorlGuardUtil.getRegionSet(event.getClickedBlock());
-        if(!set.testState(WorlGuardUtil.getBukkitPlayer(event.getPlayer()),CansteinGottesdienst.CUSTOM_BLOCKS)){
+        if(!set.testState(WorlGuardUtil.getBukkitPlayer(event.getPlayer()), Flags.CUSTOM_BLOCKS)){
             return;
         }
 
@@ -34,7 +35,7 @@ public class BlockInteractListener implements Listener {
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event){
         ApplicableRegionSet set = WorlGuardUtil.getRegionSet(event.getBlock());
-        if(!set.testState(WorlGuardUtil.getBukkitPlayer(event.getPlayer()),CansteinGottesdienst.CUSTOM_BLOCKS)){
+        if(!set.testState(WorlGuardUtil.getBukkitPlayer(event.getPlayer()), Flags.CUSTOM_BLOCKS)){
             return;
         }
         CustomBlock block = CansteinGottesdienst.BLOCKS.getBlock(event.getBlock().getType());

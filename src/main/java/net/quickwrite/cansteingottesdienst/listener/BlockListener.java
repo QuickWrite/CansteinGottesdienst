@@ -5,6 +5,7 @@ import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.regions.RegionQuery;
 import net.quickwrite.cansteingottesdienst.CansteinGottesdienst;
 import net.quickwrite.cansteingottesdienst.util.WorlGuardUtil;
+import net.quickwrite.cansteingottesdienst.util.storage.Flags;
 import org.bukkit.block.data.Ageable;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -27,7 +28,7 @@ public class BlockListener implements Listener {
 
         final ApplicableRegionSet regionSet = WorlGuardUtil.getRegionSet(event.getBlock());
 
-        if(!regionSet.testState(WorlGuardUtil.getBukkitPlayer(player), CansteinGottesdienst.INFINITE_CROPS))
+        if(!regionSet.testState(WorlGuardUtil.getBukkitPlayer(player), Flags.INFINITE_CROPS))
             return;
 
         if (!(event.getBlock().getBlockData() instanceof Ageable))
