@@ -29,19 +29,20 @@ public class BlockInteractListener implements Listener {
         if(block == null){
             return;
         }
-        block.onBlockPlace(event.getClickedBlock().getLocation().add(event.getBlockFace().getModX(), event.getBlockFace().getModY(), event.getBlockFace().getModZ()));
+        block.onBlockPlace(event.getClickedBlock().getLocation().add(event.getBlockFace().getModX(),
+                event.getBlockFace().getModY(), event.getBlockFace().getModZ()));
         event.setCancelled(true);
     }
 
     @EventHandler(priority = EventPriority.HIGH)
-    public static void onBlockBreak(BlockBreakEvent event){
+    public void onBlockBreak(BlockBreakEvent event){
         CustomBlock block = CansteinGottesdienst.BLOCKS.getBlock(event.getBlock().getType());
         if(block == null){
             return;
         }
 
         if(block.onBlockBreak(event.getPlayer(), event.getBlock().getLocation())){
-            block.dropItem(event.getBlock().getLocation());
+            block.dropItem(event.getBlock().getLocation().add(0.5,-0.5,0.5));
             event.setCancelled(true);
         }
     }
