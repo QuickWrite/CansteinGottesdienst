@@ -2,7 +2,8 @@ package net.quickwrite.cansteingottesdienst;
 
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import net.quickwrite.cansteingottesdienst.blocks.Blocks;
-import net.quickwrite.cansteingottesdienst.blocks.TestBlock;
+import net.quickwrite.cansteingottesdienst.blocks.CeleryBlock;
+import net.quickwrite.cansteingottesdienst.blocks.GrapesBlock;
 import net.quickwrite.cansteingottesdienst.builder.items.ItemBuilder;
 import net.quickwrite.cansteingottesdienst.commands.GetCustomBlockCommand;
 import net.quickwrite.cansteingottesdienst.commands.rlgl.RedLightGreenLightCommand;
@@ -47,7 +48,8 @@ public final class CansteinGottesdienst extends JavaPlugin {
 
         // registration of custom Blocks
         BLOCKS = new Blocks();
-        BLOCKS.register(new TestBlock());
+        BLOCKS.register(new CeleryBlock());
+        BLOCKS.register(new GrapesBlock());
 
         initializeCrops();
 
@@ -120,6 +122,7 @@ public final class CansteinGottesdienst extends JavaPlugin {
         CropInfo.addCrop(Material.WHEAT, wheatDrop);
         CropInfo.addCrop(Material.CARROTS, carrotDrop);
 
-        CropInfo.addCrop(new TestBlock());
+        CropInfo.addCrop(new CeleryBlock());
+        CropInfo.addCrop(new GrapesBlock());
     }
 }

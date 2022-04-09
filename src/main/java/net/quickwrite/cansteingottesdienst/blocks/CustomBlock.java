@@ -37,9 +37,10 @@ public abstract class CustomBlock {
         locations.add(def);
         l.add(.5, 0, .5);
         ArmorStand armorStand = l.getWorld().spawn(l, ArmorStand.class);
-        //armorStand.setInvisible(true);
         armorStand.getEquipment().setItem(EquipmentSlot.HEAD, headItem);
         armorStand.setGravity(false);
+        armorStand.setInvulnerable(true);
+        armorStand.setInvisible(true);
 
         for(EquipmentSlot e : EquipmentSlot.values()){
             armorStand.addEquipmentLock(e, ArmorStand.LockType.ADDING_OR_CHANGING);
