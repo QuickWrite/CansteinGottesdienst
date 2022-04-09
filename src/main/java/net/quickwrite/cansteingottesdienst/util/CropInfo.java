@@ -1,5 +1,6 @@
 package net.quickwrite.cansteingottesdienst.util;
 
+import net.quickwrite.cansteingottesdienst.blocks.CustomBlock;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
@@ -14,7 +15,11 @@ public class CropInfo {
         cropMap.put(material, new CropData(items));
     }
 
-    public static CropData getDrops(Material material) {
+    public static void addCrop(CustomBlock customBlock) {
+        cropMap.put(customBlock.getBaseBlock(), new CropData(customBlock));
+    }
+
+    public static CropData getData(Material material) {
         return cropMap.get(material);
     }
 
@@ -24,9 +29,16 @@ public class CropInfo {
 
     public static class CropData {
         private final List<ItemStack> items;
+        private final CustomBlock customBlock;
 
         public CropData(List<ItemStack> items) {
             this.items = items;
+            this.customBlock = null;
+        }
+
+        public CropData(CustomBlock customBlock) {
+            this.items = null;
+            this.customBlock = customBlock;
         }
 
         public List<ItemStack> getItems() {
@@ -34,7 +46,15 @@ public class CropInfo {
         }
 
         public String toString() {
-            return "CropData{items[" + items + "]}";
+            return "CropData{items[" + items + ",customBlock{" + customBlock + "}]}";
+        }
+
+        public boolean isCustomBlock() {
+            return customBlock != null;
+        }
+
+        public CustomBlock getCustomBlock() {
+            return this.customBlock;
         }
     }
 }

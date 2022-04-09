@@ -119,5 +119,7 @@ public final class CansteinGottesdienst extends JavaPlugin {
 
         CropInfo.addCrop(Material.WHEAT, wheatDrop);
         CropInfo.addCrop(Material.CARROTS, carrotDrop);
+
+        CropInfo.addCrop(new TestBlock());
     }
 }

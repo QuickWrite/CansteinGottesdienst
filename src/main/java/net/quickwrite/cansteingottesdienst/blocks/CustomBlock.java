@@ -65,6 +65,10 @@ public abstract class CustomBlock {
         return true;
     }
 
+    public boolean isCustomBlock(Location location) {
+        return armorstands.containsKey(location);
+    }
+
     public void dropItem(Location loc){
         Item i = loc.getWorld().spawn(loc, Item.class);
         i.setItemStack(dropStack);

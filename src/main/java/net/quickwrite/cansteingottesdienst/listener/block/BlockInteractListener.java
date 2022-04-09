@@ -6,6 +6,7 @@ import net.quickwrite.cansteingottesdienst.blocks.CustomBlock;
 import net.quickwrite.cansteingottesdienst.util.WorlGuardUtil;
 import net.quickwrite.cansteingottesdienst.util.storage.Flags;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -32,12 +33,8 @@ public class BlockInteractListener implements Listener {
         event.setCancelled(true);
     }
 
-    @EventHandler
-    public void onBlockBreak(BlockBreakEvent event){
-        ApplicableRegionSet set = WorlGuardUtil.getRegionSet(event.getBlock());
-        if(!set.testState(WorlGuardUtil.getBukkitPlayer(event.getPlayer()), Flags.CUSTOM_BLOCKS)){
-            return;
-        }
+    @EventHandler(priority = EventPriority.HIGH)
+    public static void onBlockBreak(BlockBreakEvent event){
         CustomBlock block = CansteinGottesdienst.BLOCKS.getBlock(event.getBlock().getType());
         if(block == null){
             return;

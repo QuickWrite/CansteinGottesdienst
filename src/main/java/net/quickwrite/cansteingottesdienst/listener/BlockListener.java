@@ -4,14 +4,13 @@ import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.regions.RegionQuery;
 import net.quickwrite.cansteingottesdienst.CansteinGottesdienst;
+import net.quickwrite.cansteingottesdienst.blocks.CustomBlock;
 import net.quickwrite.cansteingottesdienst.util.CropInfo;
 import net.quickwrite.cansteingottesdienst.util.WorlGuardUtil;
 import net.quickwrite.cansteingottesdienst.util.storage.Flags;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
-import org.bukkit.block.Block;
 import org.bukkit.block.data.Ageable;
-import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -28,7 +27,7 @@ public class BlockListener implements Listener {
     /*
      * Called when a block is broken.
      */
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
         final Player player = event.getPlayer();
 
@@ -37,14 +36,41 @@ public class BlockListener implements Listener {
         if(!regionSet.testState(WorlGuardUtil.getBukkitPlayer(player), Flags.INFINITE_CROPS))
             return;
 
-        CropInfo.CropData cropData = CropInfo.getDrops(event.getBlock().getType());
+        CropInfo.CropData cropData = CropInfo.getData(event.getBlock().getType());
 
         if(cropData == null)
             return;
 
-        event.setCancelled(true);
-
         World world = event.getPlayer().getWorld();
+
+        if (cropData.isCustomBlock()) {
+            onCustomBlockBreak(event, cropData);
+            return;
+        }
+
+        onNormalBlockBreak(event, cropData);
+    }
+
+    private int getRandomInt(int min, int max) {
+        return (int)(Math.random() * ((max - min) + 1)) + min;
+    }
+
+    private void onCustomBlockBreak(BlockBreakEvent event, CropInfo.CropData cropData) {
+        CustomBlock block = CansteinGottesdienst.BLOCKS.getBlock(event.getBlock().getType());
+        if(!block.isCustomBlock(event.getBlock().getLocation())) {
+            return;
+        }
+
+        Bukkit.getScheduler().runTaskLater(CansteinGottesdienst.getInstance(), new Runnable() {
+            @Override
+            public void run() {
+                block.onBlockPlace(event.getBlock().getLocation());
+            }
+        }, getRandomInt(40, 1000));
+    }
+
+    private void onNormalBlockBreak(BlockBreakEvent event, CropInfo.CropData cropData) {
+        event.setCancelled(true);
 
         if (!(event.getBlock().getBlockData() instanceof Ageable)) {
             return;
@@ -59,7 +85,7 @@ public class BlockListener implements Listener {
         event.getBlock().setType(crop.getMaterial());
 
         for(ItemStack drop : cropData.getItems()) {
-            world.dropItem(event.getBlock().getLocation().add(0.5,-0.5,0.5), drop);
+            event.getPlayer().getWorld().dropItem(event.getBlock().getLocation().add(0.5,-0.5,0.5), drop);
         }
 
         Bukkit.getScheduler().runTaskLater(CansteinGottesdienst.getInstance(), new Runnable() {
@@ -70,9 +96,5 @@ public class BlockListener implements Listener {
                 event.getBlock().setBlockData(crop);
             }
         }, getRandomInt(40, 1000));
-    }
-
-    private int getRandomInt(int min, int max) {
-        return (int)(Math.random() * ((max - min) + 1)) + min;
     }
 }
