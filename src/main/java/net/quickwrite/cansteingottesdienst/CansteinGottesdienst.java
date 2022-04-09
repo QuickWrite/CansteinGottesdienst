@@ -3,8 +3,7 @@ package net.quickwrite.cansteingottesdienst;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import net.quickwrite.cansteingottesdienst.blocks.Blocks;
 import net.quickwrite.cansteingottesdienst.blocks.TestBlock;
-import net.quickwrite.cansteingottesdienst.builder.recipes.FurnaceRecipeBuilder;
-import net.quickwrite.cansteingottesdienst.builder.recipes.RecipeBuilder;
+import net.quickwrite.cansteingottesdienst.builder.items.ItemBuilder;
 import net.quickwrite.cansteingottesdienst.commands.GetCustomBlockCommand;
 import net.quickwrite.cansteingottesdienst.commands.rlgl.RedLightGreenLightCommand;
 import net.quickwrite.cansteingottesdienst.listener.block.BlockInteractListener;
@@ -12,14 +11,18 @@ import net.quickwrite.cansteingottesdienst.rlgl.RedLightGreenLightGame;
 import net.quickwrite.cansteingottesdienst.rlgl.RedLightGreenLightSettings;
 import net.quickwrite.cansteingottesdienst.tabcomplete.GetCustomBlockTabCompleter;
 import net.quickwrite.cansteingottesdienst.tabcomplete.RedLightGreenLightTabCompleter;
+import net.quickwrite.cansteingottesdienst.util.CropInfo;
 import net.quickwrite.cansteingottesdienst.util.storage.Flags;
+import org.bukkit.Material;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import net.quickwrite.cansteingottesdienst.listener.BlockListener;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Recipe;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.ArrayList;
 
 public final class CansteinGottesdienst extends JavaPlugin {
 
@@ -46,6 +49,8 @@ public final class CansteinGottesdienst extends JavaPlugin {
         BLOCKS = new Blocks();
         BLOCKS.register(new TestBlock());
 
+        initializeCrops();
+
         // register Commands
         PluginCommand rlglCommand = getCommand("rlgl");
         assert rlglCommand != null;
@@ -65,6 +70,7 @@ public final class CansteinGottesdienst extends JavaPlugin {
     @Override
     public void onDisable() {
         // Plugin shutdown logic
+        CropInfo.flush();
     }
 
     public void initializeWorldGuard() {
@@ -102,5 +108,16 @@ public final class CansteinGottesdienst extends JavaPlugin {
             raceGame.stop();
         }
         raceGame = null;
+    }
+
+    private void initializeCrops() {
+        ArrayList<ItemStack> wheatDrop = new ArrayList<>();
+        wheatDrop.add(new ItemBuilder(Material.WHEAT).setAmount(3).build());
+
+        ArrayList<ItemStack> carrotDrop = new ArrayList<>();
+        carrotDrop.add(new ItemBuilder(Material.CARROT).setAmount(3).build());
+
+        CropInfo.addCrop(Material.WHEAT, wheatDrop);
+        CropInfo.addCrop(Material.CARROTS, carrotDrop);
     }
 }
