@@ -7,6 +7,7 @@ import net.quickwrite.cansteingottesdienst.blocks.GrapesBlock;
 import net.quickwrite.cansteingottesdienst.builder.items.ItemBuilder;
 import net.quickwrite.cansteingottesdienst.commands.GetCustomBlockCommand;
 import net.quickwrite.cansteingottesdienst.commands.rlgl.RedLightGreenLightCommand;
+import net.quickwrite.cansteingottesdienst.config.CustomBlockConfig;
 import net.quickwrite.cansteingottesdienst.listener.block.BlockInteractListener;
 import net.quickwrite.cansteingottesdienst.rlgl.RedLightGreenLightGame;
 import net.quickwrite.cansteingottesdienst.rlgl.RedLightGreenLightSettings;
@@ -16,6 +17,7 @@ import net.quickwrite.cansteingottesdienst.util.CropInfo;
 import net.quickwrite.cansteingottesdienst.util.storage.Flags;
 import org.bukkit.Material;
 import org.bukkit.command.PluginCommand;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import net.quickwrite.cansteingottesdienst.listener.BlockListener;
 import org.bukkit.Bukkit;
@@ -33,6 +35,7 @@ public final class CansteinGottesdienst extends JavaPlugin {
     public static WorldGuardPlugin WORLDGUARD_PLUGIN;
     public static String PREFIX = "[Gottesdienst] ";
     public static final String PATH = "canstein";
+    public static CustomBlockConfig CUSTOM_BLOCK_CONFIG;
 
     private RedLightGreenLightGame raceGame;
 
@@ -45,6 +48,12 @@ public final class CansteinGottesdienst extends JavaPlugin {
     public void onEnable() {
         instance = this;
         ConfigurationSerialization.registerClass(RedLightGreenLightSettings.class);
+        CUSTOM_BLOCK_CONFIG = new CustomBlockConfig();
+
+        FileConfiguration config = CUSTOM_BLOCK_CONFIG.getConfig();
+        config.set("test1", "DIES IST EIN TEST");
+        CUSTOM_BLOCK_CONFIG.saveConfig();
+        System.out.println(CUSTOM_BLOCK_CONFIG.getConfig().get("test1"));
 
         // registration of custom Blocks
         BLOCKS = new Blocks();
