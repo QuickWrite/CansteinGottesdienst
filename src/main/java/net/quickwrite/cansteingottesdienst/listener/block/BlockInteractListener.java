@@ -5,12 +5,17 @@ import net.quickwrite.cansteingottesdienst.CansteinGottesdienst;
 import net.quickwrite.cansteingottesdienst.blocks.CustomBlock;
 import net.quickwrite.cansteingottesdienst.util.WorlGuardUtil;
 import net.quickwrite.cansteingottesdienst.util.storage.Flags;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.persistence.PersistentDataType;
 
 public class BlockInteractListener implements Listener {
 
@@ -32,6 +37,16 @@ public class BlockInteractListener implements Listener {
         block.onBlockPlace(event.getClickedBlock().getLocation().add(event.getBlockFace().getModX(),
                 event.getBlockFace().getModY(), event.getBlockFace().getModZ()));
         event.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onPlayerInteractEntity(EntityDamageByEntityEvent event){
+        if(!(event.getDamager() instanceof Player)) return;
+        if(!(event.getEntity() instanceof ArmorStand)) return;
+        ArmorStand stand = (ArmorStand) event.getEntity();
+        if(stand.getPersistentDataContainer().getOrDefault(CustomBlock.BLOCK_KEY, PersistentDataType.INTEGER, 0) == 1){
+            event.setCancelled(true);
+        }
     }
 
     @EventHandler(priority = EventPriority.HIGH)

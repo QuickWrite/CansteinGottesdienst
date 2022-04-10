@@ -51,6 +51,7 @@ public abstract class CustomBlock {
         armorStand.setGravity(false);
         armorStand.setInvulnerable(true);
         armorStand.setInvisible(true);
+        armorStand.getPersistentDataContainer().set(BLOCK_KEY, PersistentDataType.INTEGER, 1);
 
 
         for(EquipmentSlot e : EquipmentSlot.values()){
@@ -60,7 +61,7 @@ public abstract class CustomBlock {
         new BukkitRunnable() {
             @Override
             public void run() {
-                l.getBlock().setType(baseBlock);
+                l.getBlock().setType(baseBlock, false);
             }
         }.runTaskLater(CansteinGottesdienst.getInstance(), 1);
         //
