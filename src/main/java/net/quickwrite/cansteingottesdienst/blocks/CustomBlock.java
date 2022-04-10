@@ -37,7 +37,7 @@ public abstract class CustomBlock {
     public void fillArmorstands(ConfigurationSection section){
         int size = section.getInt("size");
         for(int i = 0; i < size; i++){
-            WorldBlockPair pair = (WorldBlockPair) section.get(String.valueOf(i));
+            WorldBlockPair pair = (WorldBlockPair) section.get("blocks." + i);
             if(pair != null) armorstands.put(pair.getLoc(), pair.getArmorStand());
         }
     }
@@ -86,17 +86,26 @@ public abstract class CustomBlock {
 
         System.out.println(armorstands.values());
 
+        for(Location loc : armorstands.keySet()){
+            loc.getBlock().setType(Material.AIR);
+            armorstands.get(loc).remove();
+        }
+        armorstands.clear();
+
+        /*
         for (ArmorStand armorStand : armorstands.values()) {
             if (armorStand == null)
                 continue;
 
-            Location location = armorStand.getLocation().add(0, 1, 1);
+            Location location = armorStand.getLocation().add(0, 1, 0);
 
             location.getBlock().setType(Material.AIR);
             armorStand.remove();
         }
 
         armorstands.clear();
+
+         */
 
         return length;
     }
@@ -115,12 +124,12 @@ public abstract class CustomBlock {
     }
 
     public void serialize(FileConfiguration config) {
-        HashMap<String, Object> map = new HashMap<>();
         config.set("cbs." + identifier + ".size", armorstands.size());
-
         int i = 0;
+        config.set("cbs." + identifier + ".blocks", null);
         for(Location loc : armorstands.keySet()){
-            config.set("cbs." + identifier + "." + String.valueOf(i), new WorldBlockPair(loc, armorstands.get(loc).getUniqueId()));
+            System.out.println(loc);
+            config.set("cbs." + identifier + ".blocks." + i, new WorldBlockPair(loc, armorstands.get(loc).getUniqueId()));
             i++;
         }
     }
