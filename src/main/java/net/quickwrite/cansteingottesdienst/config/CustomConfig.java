@@ -1,6 +1,5 @@
 package net.quickwrite.cansteingottesdienst.config;
 
-import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -23,12 +22,8 @@ public class CustomConfig {
             configFile.getParentFile().mkdirs();
             plugin.saveResource(name, false);
         }
-        config = new YamlConfiguration();
-        try {
-            config.load(configFile);
-        } catch (IOException | InvalidConfigurationException e) {
-            e.printStackTrace();
-        }
+
+        config = YamlConfiguration.loadConfiguration(configFile);
     }
 
     public void saveConfig(){

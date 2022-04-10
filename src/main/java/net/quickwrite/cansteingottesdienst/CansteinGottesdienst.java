@@ -4,6 +4,7 @@ import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import net.quickwrite.cansteingottesdienst.blocks.Blocks;
 import net.quickwrite.cansteingottesdienst.blocks.CeleryBlock;
 import net.quickwrite.cansteingottesdienst.blocks.GrapesBlock;
+import net.quickwrite.cansteingottesdienst.blocks.WorldBlockPair;
 import net.quickwrite.cansteingottesdienst.builder.items.ItemBuilder;
 import net.quickwrite.cansteingottesdienst.commands.GetCustomBlockCommand;
 import net.quickwrite.cansteingottesdienst.commands.rlgl.RedLightGreenLightCommand;
@@ -48,12 +49,8 @@ public final class CansteinGottesdienst extends JavaPlugin {
     public void onEnable() {
         instance = this;
         ConfigurationSerialization.registerClass(RedLightGreenLightSettings.class);
+        ConfigurationSerialization.registerClass(WorldBlockPair.class);
         CUSTOM_BLOCK_CONFIG = new CustomBlockConfig();
-
-        FileConfiguration config = CUSTOM_BLOCK_CONFIG.getConfig();
-        config.set("test1", "DIES IST EIN TEST");
-        CUSTOM_BLOCK_CONFIG.saveConfig();
-        System.out.println(CUSTOM_BLOCK_CONFIG.getConfig().get("test1"));
 
         // registration of custom Blocks
         BLOCKS = new Blocks();
@@ -82,6 +79,7 @@ public final class CansteinGottesdienst extends JavaPlugin {
     public void onDisable() {
         // Plugin shutdown logic
         CropInfo.flush();
+        BLOCKS.save();
     }
 
     public void initializeWorldGuard() {

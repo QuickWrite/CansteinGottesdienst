@@ -3,21 +3,25 @@ package net.quickwrite.cansteingottesdienst.blocks;
 import net.quickwrite.cansteingottesdienst.CansteinGottesdienst;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public abstract class CustomBlock {
 
+    public static final NamespacedKey BLOCK_KEY = new NamespacedKey(CansteinGottesdienst.getInstance(), "customBlock");
+
     protected ItemStack headItem, dropStack, invItem;
     protected Material baseBlock;
-    protected ArrayList<Location> locations;
     protected HashMap<Location, ArmorStand> armorstands;
     protected String identifier;
 
@@ -27,20 +31,27 @@ public abstract class CustomBlock {
         this.dropStack = dropStack;
         this.invItem = invItem;
         this.baseBlock = baseBlock;
-        locations = new ArrayList<>();
         armorstands = new HashMap<>();
+    }
+
+    public void fillArmorstands(ConfigurationSection section){
+        int size = section.getInt("size");
+        for(int i = 0; i < size; i++){
+            WorldBlockPair pair = (WorldBlockPair) section.get(String.valueOf(i));
+            if(pair != null) armorstands.put(pair.getLoc(), pair.getArmorStand());
+        }
     }
 
     public void onBlockPlace(Location loc){
         final Location l = normalizeLocation(loc);
         Location def = l.clone();
-        locations.add(def);
         l.add(.5, 0, .5);
         ArmorStand armorStand = l.getWorld().spawn(l, ArmorStand.class);
         armorStand.getEquipment().setItem(EquipmentSlot.HEAD, headItem);
         armorStand.setGravity(false);
         armorStand.setInvulnerable(true);
         armorStand.setInvisible(true);
+
 
         for(EquipmentSlot e : EquipmentSlot.values()){
             armorStand.addEquipmentLock(e, ArmorStand.LockType.ADDING_OR_CHANGING);
@@ -79,6 +90,16 @@ public abstract class CustomBlock {
         return new Location(l.getWorld(), l.getBlockX(), l.getBlockY(), l.getBlockZ(), 0, 0);
     }
 
+    public void serialize(FileConfiguration config) {
+        HashMap<String, Object> map = new HashMap<>();
+        config.set("cbs." + identifier + ".size", armorstands.size());
+
+        int i = 0;
+        for(Location loc : armorstands.keySet()){
+            config.set("cbs." + identifier + "." + String.valueOf(i), new WorldBlockPair(loc, armorstands.get(loc).getUniqueId()));
+            i++;
+        }
+    }
 
     public void giveItem(Player p){
         p.getInventory().addItem(invItem);
