@@ -45,7 +45,7 @@ public abstract class CustomBlock {
     public void onBlockPlace(Location loc){
         final Location l = normalizeLocation(loc);
         Location def = l.clone();
-        l.add(.5, 0, .5);
+        l.add(.5, -1, .5);
         ArmorStand armorStand = l.getWorld().spawn(l, ArmorStand.class);
         armorStand.getEquipment().setItem(EquipmentSlot.HEAD, headItem);
         armorStand.setGravity(false);
@@ -61,7 +61,7 @@ public abstract class CustomBlock {
         new BukkitRunnable() {
             @Override
             public void run() {
-                l.getBlock().setType(baseBlock, false);
+                l.add(0, 1, 0).getBlock().setType(baseBlock, false);
             }
         }.runTaskLater(CansteinGottesdienst.getInstance(), 1);
         //
@@ -76,6 +76,29 @@ public abstract class CustomBlock {
         armorstands.remove(loc);
         loc.getBlock().setType(Material.AIR);
         return true;
+    }
+
+    public int removeBlocks() {
+        if (armorstands.isEmpty())
+            return 0;
+
+        int length = armorstands.size();
+
+        System.out.println(armorstands.values());
+
+        for (ArmorStand armorStand : armorstands.values()) {
+            if (armorStand == null)
+                continue;
+
+            Location location = armorStand.getLocation().add(0, 1, 1);
+
+            location.getBlock().setType(Material.AIR);
+            armorStand.remove();
+        }
+
+        armorstands.clear();
+
+        return length;
     }
 
     public boolean isCustomBlock(Location location) {

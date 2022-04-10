@@ -6,14 +6,14 @@ import net.quickwrite.cansteingottesdienst.blocks.CeleryBlock;
 import net.quickwrite.cansteingottesdienst.blocks.GrapesBlock;
 import net.quickwrite.cansteingottesdienst.blocks.WorldBlockPair;
 import net.quickwrite.cansteingottesdienst.builder.items.ItemBuilder;
-import net.quickwrite.cansteingottesdienst.commands.GetCustomBlockCommand;
+import net.quickwrite.cansteingottesdienst.commands.CustomBlockCommand;
 import net.quickwrite.cansteingottesdienst.commands.rlgl.RedLightGreenLightCommand;
 import net.quickwrite.cansteingottesdienst.config.CustomBlockConfig;
 import net.quickwrite.cansteingottesdienst.listener.block.BlockInteractListener;
 import net.quickwrite.cansteingottesdienst.rlgl.RedLightGreenLightGame;
 import net.quickwrite.cansteingottesdienst.rlgl.RedLightGreenLightSettings;
-import net.quickwrite.cansteingottesdienst.tabcomplete.GetCustomBlockTabCompleter;
-import net.quickwrite.cansteingottesdienst.tabcomplete.RedLightGreenLightTabCompleter;
+import net.quickwrite.cansteingottesdienst.commands.tabcomplete.CustomBlockCommandTabCompleter;
+import net.quickwrite.cansteingottesdienst.commands.tabcomplete.RedLightGreenLightTabCompleter;
 import net.quickwrite.cansteingottesdienst.util.CropInfo;
 import net.quickwrite.cansteingottesdienst.util.storage.Flags;
 import org.bukkit.Material;
@@ -65,10 +65,10 @@ public final class CansteinGottesdienst extends JavaPlugin {
         rlglCommand.setExecutor(new RedLightGreenLightCommand());
         rlglCommand.setTabCompleter(new RedLightGreenLightTabCompleter());
 
-        PluginCommand getCustomBlockCommand = getCommand("getCustomBlock");
-        assert getCustomBlockCommand != null;
-        getCustomBlockCommand.setExecutor(new GetCustomBlockCommand());
-        getCustomBlockCommand.setTabCompleter(new GetCustomBlockTabCompleter());
+        PluginCommand customBlockCommand = getCommand("customblock");
+        assert customBlockCommand != null;
+        customBlockCommand.setExecutor(new CustomBlockCommand());
+        customBlockCommand.setTabCompleter(new CustomBlockCommandTabCompleter());
 
         // register EventListener
         getServer().getPluginManager().registerEvents(new BlockListener(), this);
