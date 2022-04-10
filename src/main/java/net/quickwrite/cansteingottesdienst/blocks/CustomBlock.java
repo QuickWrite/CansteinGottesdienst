@@ -84,8 +84,6 @@ public abstract class CustomBlock {
 
         int length = armorstands.size();
 
-        System.out.println(armorstands.values());
-
         for(Location loc : armorstands.keySet()){
             loc.getBlock().setType(Material.AIR);
             armorstands.get(loc).remove();

@@ -61,6 +61,12 @@ public class ItemBuilder {
         return this;
     }
 
+    public ItemBuilder setItemMeta(ItemMeta meta) {
+        this.itemStack.setItemMeta(meta);
+
+        return this;
+    }
+
     public ItemBuilder addItemFlags(ItemFlag... itemFlags){
         ItemMeta itemMeta = this.itemStack.getItemMeta();
         if (itemMeta != null) {

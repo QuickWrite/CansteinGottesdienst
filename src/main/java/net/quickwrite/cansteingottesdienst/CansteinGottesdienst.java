@@ -9,6 +9,7 @@ import net.quickwrite.cansteingottesdienst.builder.items.ItemBuilder;
 import net.quickwrite.cansteingottesdienst.commands.CustomBlockCommand;
 import net.quickwrite.cansteingottesdienst.commands.rlgl.RedLightGreenLightCommand;
 import net.quickwrite.cansteingottesdienst.config.CustomBlockConfig;
+import net.quickwrite.cansteingottesdienst.listener.FoodListener;
 import net.quickwrite.cansteingottesdienst.listener.block.BlockInteractListener;
 import net.quickwrite.cansteingottesdienst.rlgl.RedLightGreenLightGame;
 import net.quickwrite.cansteingottesdienst.rlgl.RedLightGreenLightSettings;
@@ -24,6 +25,7 @@ import net.quickwrite.cansteingottesdienst.listener.BlockListener;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
@@ -71,8 +73,11 @@ public final class CansteinGottesdienst extends JavaPlugin {
         customBlockCommand.setTabCompleter(new CustomBlockCommandTabCompleter());
 
         // register EventListener
-        getServer().getPluginManager().registerEvents(new BlockListener(), this);
-        getServer().getPluginManager().registerEvents(new BlockInteractListener(), this);
+        PluginManager pluginManager = getServer().getPluginManager();
+
+        pluginManager.registerEvents(new BlockListener(), this);
+        pluginManager.registerEvents(new BlockInteractListener(), this);
+        pluginManager.registerEvents(new FoodListener(), this);
     }
 
     @Override
