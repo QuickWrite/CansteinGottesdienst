@@ -92,21 +92,6 @@ public abstract class CustomBlock {
         }
         armorstands.clear();
 
-        /*
-        for (ArmorStand armorStand : armorstands.values()) {
-            if (armorStand == null)
-                continue;
-
-            Location location = armorStand.getLocation().add(0, 1, 0);
-
-            location.getBlock().setType(Material.AIR);
-            armorStand.remove();
-        }
-
-        armorstands.clear();
-
-         */
-
         return length;
     }
 
@@ -128,7 +113,6 @@ public abstract class CustomBlock {
         int i = 0;
         config.set("cbs." + identifier + ".blocks", null);
         for(Location loc : armorstands.keySet()){
-            System.out.println(loc);
             config.set("cbs." + identifier + ".blocks." + i, new WorldBlockPair(loc, armorstands.get(loc).getUniqueId()));
             i++;
         }
