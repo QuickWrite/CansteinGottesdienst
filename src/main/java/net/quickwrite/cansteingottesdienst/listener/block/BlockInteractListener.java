@@ -10,9 +10,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.persistence.PersistentDataType;
@@ -22,6 +22,7 @@ public class BlockInteractListener implements Listener {
     @EventHandler
     public void onBlockPlace(PlayerInteractEvent event){
         if(event.getHand() != EquipmentSlot.HAND) return;
+        if(!event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) return;
         if(event.getClickedBlock() == null) return;
 
         ApplicableRegionSet set = WorlGuardUtil.getRegionSet(event.getClickedBlock());
