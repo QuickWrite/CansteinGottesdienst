@@ -67,7 +67,7 @@ public abstract class CustomBlock {
     }
 
     public boolean isCustomBlock(Location location) {
-        return armorstands.containsKey(location);
+        return armorstands.containsKey(normalizeLocation(location));
     }
 
     public void dropItem(Location loc){
