@@ -5,6 +5,7 @@ import com.sk89q.worldedit.util.Location;
 import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.bukkit.BukkitPlayer;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
+import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.regions.RegionQuery;
 import net.quickwrite.cansteingottesdienst.CansteinGottesdienst;
 import org.bukkit.block.Block;
@@ -23,6 +24,12 @@ public class WorlGuardUtil {
 
     public static ApplicableRegionSet getRegionSet(Block block) {
         return query.getApplicableRegions(getWELocation(block));
+    }
+
+    public static boolean testFlag(Block block, Player player, StateFlag flag) {
+        ApplicableRegionSet regionSet = getRegionSet(block);
+
+        return regionSet.testState(getBukkitPlayer(player), flag);
     }
 
     public static Location getWELocation(final Block block) {

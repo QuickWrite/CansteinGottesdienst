@@ -11,6 +11,7 @@ public class Flags {
 
     public static StateFlag INFINITE_CROPS;
     public static StateFlag CUSTOM_BLOCKS;
+    public static StateFlag SHEEP_TO_LAMB;
 
     static {
         REGISTRY = WorldGuard.getInstance().getFlagRegistry();

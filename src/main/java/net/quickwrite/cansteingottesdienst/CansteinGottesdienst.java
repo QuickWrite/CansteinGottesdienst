@@ -13,6 +13,7 @@ import net.quickwrite.cansteingottesdienst.commands.tabcomplete.CustomBlockComma
 import net.quickwrite.cansteingottesdienst.commands.tabcomplete.RedLightGreenLightTabCompleter;
 import net.quickwrite.cansteingottesdienst.listener.BlockListener;
 import net.quickwrite.cansteingottesdienst.listener.ConveyorListener;
+import net.quickwrite.cansteingottesdienst.listener.EntityChangeListener;
 import net.quickwrite.cansteingottesdienst.listener.FoodListener;
 import net.quickwrite.cansteingottesdienst.listener.block.BlockInteractListener;
 import net.quickwrite.cansteingottesdienst.rlgl.RedLightGreenLightGame;
@@ -73,6 +74,7 @@ public final class CansteinGottesdienst extends JavaPlugin {
         pluginManager.registerEvents(new BlockInteractListener(), this);
         pluginManager.registerEvents(new FoodListener(), this);
         pluginManager.registerEvents(new ConveyorListener(), this);
+        pluginManager.registerEvents(new EntityChangeListener(), this);
     }
 
     public void registerCommand(String name, CommandExecutor executor, TabCompleter tabCompleter){
@@ -95,6 +97,7 @@ public final class CansteinGottesdienst extends JavaPlugin {
         // register the flags from here
         Flags.INFINITE_CROPS = Flags.addFlag("infinite-crops", false);
         Flags.CUSTOM_BLOCKS = Flags.addFlag("custom-blocks", false);
+        Flags.SHEEP_TO_LAMB = Flags.addFlag("sheep-to-lamb", false);
     }
 
     public boolean initGame(Player player){
