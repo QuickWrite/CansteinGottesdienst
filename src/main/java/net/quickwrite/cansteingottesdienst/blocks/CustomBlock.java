@@ -38,12 +38,18 @@ public abstract class CustomBlock {
         int size = section.getInt("size");
         for(int i = 0; i < size; i++){
             WorldBlockPair pair = (WorldBlockPair) section.get("blocks." + i);
-            if(pair != null) armorstands.put(pair.getLoc(), pair.getArmorStand());
+            if(pair == null) continue;
+            if(pair.isValid()){
+                armorstands.put(normalizeLocation(pair.getLoc()), pair.getArmorStand());
+            }else{
+                pair.getLoc().getBlock().setType(Material.AIR);
+            }
         }
     }
 
-    public void onBlockPlace(Location loc){
+    public boolean onBlockPlace(Location loc){
         final Location l = normalizeLocation(loc);
+        if(!l.getBlock().isEmpty()) return false;
         Location def = l.clone();
         l.add(.5, -1, .5);
         ArmorStand armorStand = l.getWorld().spawn(l, ArmorStand.class);
@@ -64,7 +70,7 @@ public abstract class CustomBlock {
                 l.add(0, 1, 0).getBlock().setType(baseBlock, false);
             }
         }.runTaskLater(CansteinGottesdienst.getInstance(), 1);
-        //
+        return true;
     }
 
     public boolean onBlockBreak(Player p, Location loc){

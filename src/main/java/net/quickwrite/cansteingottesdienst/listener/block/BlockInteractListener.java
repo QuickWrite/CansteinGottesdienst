@@ -30,14 +30,15 @@ public class BlockInteractListener implements Listener {
             return;
         }
 
-
         CustomBlock block = CansteinGottesdienst.BLOCKS.getBlock(event.getItem());
         if(block == null){
             return;
         }
-        block.onBlockPlace(event.getClickedBlock().getLocation().add(event.getBlockFace().getModX(),
-                event.getBlockFace().getModY(), event.getBlockFace().getModZ()));
-        event.setCancelled(true);
+        if(!event.getPlayer().hasPermission("canstein.customblocks.place." + block.getIdentifier())) return;
+        if(block.onBlockPlace(event.getClickedBlock().getLocation().add(event.getBlockFace().getModX(),
+                event.getBlockFace().getModY(), event.getBlockFace().getModZ()))){
+            event.setCancelled(true);
+        }
     }
 
     @EventHandler

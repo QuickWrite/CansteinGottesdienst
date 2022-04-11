@@ -37,6 +37,10 @@ public class WorldBlockPair implements ConfigurationSerializable {
         return null;
     }
 
+    public boolean isValid(){
+        return getArmorStand() != null;
+    }
+
     @Override
     public Map<String, Object> serialize() {
         return new ImmutableMap.Builder<String, Object>()

@@ -18,9 +18,7 @@ public class FoodListener implements Listener {
         }
 
         event.setCancelled(true);
-
         event.getPlayer().getInventory().remove(event.getItem());
-
         event.getPlayer().getInventory().addItem(new ItemBuilder(Material.BUCKET).setItemMeta(event.getItem().getItemMeta()).build());
     }
 }
