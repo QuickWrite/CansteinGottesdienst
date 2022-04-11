@@ -86,7 +86,16 @@ public abstract class CustomBlock {
 
         for(Location loc : armorstands.keySet()){
             loc.getBlock().setType(Material.AIR);
-            armorstands.get(loc).remove();
+
+            ArmorStand armorStand = armorstands.get(loc);
+
+            if (armorStand == null) {
+                length--;
+
+                continue;
+            }
+
+            armorStand.remove();
         }
         armorstands.clear();
 
