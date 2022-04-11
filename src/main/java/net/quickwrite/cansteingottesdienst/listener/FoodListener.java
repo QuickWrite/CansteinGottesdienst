@@ -12,13 +12,10 @@ public class FoodListener implements Listener {
         if (!(event.getItem().getType() == Material.MILK_BUCKET)) {
             return;
         }
-        System.out.println("I am here!");
 
         if (!event.getItem().hasItemMeta()) {
             return;
         }
-
-        System.out.println("It has META!");
 
         event.setCancelled(true);
 

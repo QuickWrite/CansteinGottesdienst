@@ -58,7 +58,7 @@ public class BlockInteractListener implements Listener {
         }
 
         if(block.onBlockBreak(event.getPlayer(), event.getBlock().getLocation())){
-            block.dropItem(event.getBlock().getLocation().add(0.5,0.5,0.5));
+            block.dropItem(event.getBlock().getLocation().add(0.5,1.0,0.5));
             event.setCancelled(true);
         }
     }
