@@ -60,7 +60,7 @@ public abstract class CustomBlock {
         int length = 0;
         for(Entity e : world.getEntities()){
             if(!(e instanceof ArmorStand)) continue;
-            if(!e.getPersistentDataContainer().get(CUSTOM_BLOCK_TYPE_KEY, PersistentDataType.STRING).equalsIgnoreCase(identifier)) continue;
+            if(!e.getPersistentDataContainer().getOrDefault(CUSTOM_BLOCK_TYPE_KEY, PersistentDataType.STRING, "").equalsIgnoreCase(identifier)) continue;
             e.remove();
             length++;
         }

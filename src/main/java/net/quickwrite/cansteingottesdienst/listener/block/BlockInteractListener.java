@@ -3,6 +3,7 @@ package net.quickwrite.cansteingottesdienst.listener.block;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import net.quickwrite.cansteingottesdienst.CansteinGottesdienst;
 import net.quickwrite.cansteingottesdienst.blocks.CustomBlock;
+import net.quickwrite.cansteingottesdienst.blocks.EmtpyGrapesBlock;
 import net.quickwrite.cansteingottesdienst.blocks.IHarvestable;
 import net.quickwrite.cansteingottesdienst.util.WorlGuardUtil;
 import net.quickwrite.cansteingottesdienst.util.storage.Flags;
@@ -14,7 +15,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityInteractEvent;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
@@ -38,7 +38,9 @@ public class BlockInteractListener implements Listener {
             if(CansteinGottesdienst.BLOCKS.getFromDrop(event.getItem()) != null) event.setCancelled(true);
             return;
         }
+
         if(!event.getPlayer().hasPermission("canstein.customblocks.place." + block.getIdentifier())) return;
+
         Location place = event.getClickedBlock().getLocation().add(event.getBlockFace().getModX(), event.getBlockFace().getModY(), event.getBlockFace().getModZ());
 
         if(!place.clone().add(0, -1, 0).getBlock().getType().isSolid() || CustomBlock.isCustomBlock(place)){
@@ -88,14 +90,19 @@ public class BlockInteractListener implements Listener {
         String id = stand.getPersistentDataContainer().getOrDefault(CustomBlock.CUSTOM_BLOCK_TYPE_KEY, PersistentDataType.STRING, "");
         CustomBlock b = CansteinGottesdienst.BLOCKS.getBlock(id);
         if(b == null) return;
+
+        if(b instanceof EmtpyGrapesBlock) {
+            event.setCancelled(true);
+            return;
+        }
+
         if(b instanceof IHarvestable){
             ((IHarvestable) b).convert(stand);
-            event.setCancelled(true);
-        }else {
+        } else {
             stand.remove();
             b.dropItem(CustomBlock.normalizeLocation(event.getEntity().getLocation()).add(0, 0.5, 0));
-            event.setCancelled(true);
         }
+        event.setCancelled(true);
     }
 
 }

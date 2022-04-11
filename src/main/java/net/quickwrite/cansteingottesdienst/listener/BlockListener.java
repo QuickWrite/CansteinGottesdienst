@@ -5,6 +5,8 @@ import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.regions.RegionQuery;
 import net.quickwrite.cansteingottesdienst.CansteinGottesdienst;
 import net.quickwrite.cansteingottesdienst.blocks.CustomBlock;
+import net.quickwrite.cansteingottesdienst.blocks.EmtpyGrapesBlock;
+import net.quickwrite.cansteingottesdienst.blocks.GrapesBlock;
 import net.quickwrite.cansteingottesdienst.blocks.IHarvestable;
 import net.quickwrite.cansteingottesdienst.commands.CustomBlockCommand;
 import net.quickwrite.cansteingottesdienst.util.CropInfo;
@@ -68,7 +70,11 @@ public class BlockListener implements Listener {
                 PersistentDataType.STRING,
                 ""
         ));
-        onCustomBlockBreak(event.getEntity().getLocation(), cb);
+        if(cb != null) {
+            if(cb instanceof EmtpyGrapesBlock) return;
+            if(cb instanceof IHarvestable) onCustomBlockHarvest(event.getEntity().getLocation(), cb);
+            else onCustomBlockBreak(event.getEntity().getLocation(), cb);
+        }
     }
 
     @EventHandler
@@ -85,6 +91,7 @@ public class BlockListener implements Listener {
         CustomBlock b = CansteinGottesdienst.BLOCKS.getBlock(id);
         if(b == null) return;
         if(b instanceof IHarvestable){
+            if(!event.getPlayer().hasPermission("canstein.customblocks." + b.getIdentifier())) return;
             onCustomBlockHarvest(event.getRightClicked().getLocation(), b);
         }
     }
