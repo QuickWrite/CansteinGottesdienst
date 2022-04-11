@@ -28,6 +28,7 @@ public abstract class CustomBlock {
 
     protected ItemStack headItem, dropStack, invItem;
     protected String identifier;
+    protected CustomBlock convertTo;
 
     public CustomBlock(String identifier, ItemStack headItem, ItemStack dropStack, ItemStack invItem) {
         this.identifier = identifier;
@@ -66,7 +67,7 @@ public abstract class CustomBlock {
         return length;
     }
 
-    public static boolean isCustomBlock(Location location) {
+    public static ArmorStand getCustomBlockAt(Location location){
         Collection<Entity> entities = location.getWorld().getNearbyEntities(
                 normalizeLocation(location),
                 0.1,
@@ -77,9 +78,13 @@ public abstract class CustomBlock {
 
         for(Entity e : entities){
             if(e.getPersistentDataContainer().getOrDefault(BLOCK_KEY, PersistentDataType.INTEGER, 0) == 1)
-                return true;
+                return (ArmorStand) e;
         }
-        return false;
+        return null;
+    }
+
+    public static boolean isCustomBlock(Location location) {
+        return getCustomBlockAt(location) != null;
     }
 
     public void dropItem(Location loc){
@@ -111,5 +116,9 @@ public abstract class CustomBlock {
 
     public ItemStack getDropStack() {
         return dropStack;
+    }
+
+    public CustomBlock getConvertTo() {
+        return convertTo == null ? this : convertTo;
     }
 }

@@ -18,6 +18,6 @@ public class GrapesBlock extends CustomBlock implements IHarvestable{
         Location loc = stand.getLocation();
         dropItem(loc);
         stand.remove();
-        CansteinGottesdienst.BLOCKS.getBlock("empty_grapes").onBlockPlace(loc);
+        CansteinGottesdienst.BLOCKS.getBlock("empty_grapes_block").onBlockPlace(loc);
     }
 }

@@ -11,10 +11,12 @@ import net.quickwrite.cansteingottesdienst.commands.DebugCommand;
 import net.quickwrite.cansteingottesdienst.commands.rlgl.RedLightGreenLightCommand;
 import net.quickwrite.cansteingottesdienst.commands.tabcomplete.CustomBlockCommandTabCompleter;
 import net.quickwrite.cansteingottesdienst.commands.tabcomplete.RedLightGreenLightTabCompleter;
+import net.quickwrite.cansteingottesdienst.listener.BlockListener;
 import net.quickwrite.cansteingottesdienst.listener.FoodListener;
 import net.quickwrite.cansteingottesdienst.listener.block.BlockInteractListener;
 import net.quickwrite.cansteingottesdienst.rlgl.RedLightGreenLightGame;
 import net.quickwrite.cansteingottesdienst.rlgl.RedLightGreenLightSettings;
+import net.quickwrite.cansteingottesdienst.util.CropInfo;
 import net.quickwrite.cansteingottesdienst.util.storage.Flags;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -66,7 +68,7 @@ public final class CansteinGottesdienst extends JavaPlugin {
         // register EventListener
         PluginManager pluginManager = getServer().getPluginManager();
 
-        //pluginManager.registerEvents(new BlockListener(), this);
+        pluginManager.registerEvents(new BlockListener(), this);
         pluginManager.registerEvents(new BlockInteractListener(), this);
         pluginManager.registerEvents(new FoodListener(), this);
     }
@@ -81,7 +83,7 @@ public final class CansteinGottesdienst extends JavaPlugin {
     @Override
     public void onDisable() {
         // Plugin shutdown logic
-        //CropInfo.flush();
+        CropInfo.flush();
     }
 
     public void initializeWorldGuard() {
@@ -122,7 +124,7 @@ public final class CansteinGottesdienst extends JavaPlugin {
     }
 
     private void initializeCrops() {
-        /*
+
         ArrayList<ItemStack> wheatDrop = new ArrayList<>();
         wheatDrop.add(new ItemBuilder(Material.WHEAT).setAmount(3).build());
 
@@ -131,10 +133,5 @@ public final class CansteinGottesdienst extends JavaPlugin {
 
         CropInfo.addCrop(Material.WHEAT, wheatDrop);
         CropInfo.addCrop(Material.CARROTS, carrotDrop);
-
-        CropInfo.addCrop(new CeleryBlock());
-        CropInfo.addCrop(new GrapesBlock());
-
-         */
     }
 }

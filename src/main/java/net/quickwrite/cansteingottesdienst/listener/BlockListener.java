@@ -1,6 +1,29 @@
 package net.quickwrite.cansteingottesdienst.listener;
 
-/*
+import com.sk89q.worldguard.WorldGuard;
+import com.sk89q.worldguard.protection.ApplicableRegionSet;
+import com.sk89q.worldguard.protection.regions.RegionQuery;
+import net.quickwrite.cansteingottesdienst.CansteinGottesdienst;
+import net.quickwrite.cansteingottesdienst.blocks.CustomBlock;
+import net.quickwrite.cansteingottesdienst.blocks.IHarvestable;
+import net.quickwrite.cansteingottesdienst.commands.CustomBlockCommand;
+import net.quickwrite.cansteingottesdienst.util.CropInfo;
+import net.quickwrite.cansteingottesdienst.util.WorlGuardUtil;
+import net.quickwrite.cansteingottesdienst.util.storage.Flags;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.World;
+import org.bukkit.block.data.Ageable;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.player.PlayerInteractAtEntityEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.persistence.PersistentDataType;
+
 public class BlockListener implements Listener {
     private static final RegionQuery query;
 
@@ -9,7 +32,7 @@ public class BlockListener implements Listener {
     }
 
 
-     // Called when a block is broken.
+    // Called when a block is broken.
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
@@ -17,40 +40,77 @@ public class BlockListener implements Listener {
 
         final ApplicableRegionSet regionSet = WorlGuardUtil.getRegionSet(event.getBlock());
 
-        if(!regionSet.testState(WorlGuardUtil.getBukkitPlayer(player), Flags.INFINITE_CROPS))
+        if (!regionSet.testState(WorlGuardUtil.getBukkitPlayer(player), Flags.INFINITE_CROPS))
             return;
 
         CropInfo.CropData cropData = CropInfo.getData(event.getBlock().getType());
 
-        if(cropData == null)
+        if (cropData == null)
             return;
-
-        World world = event.getPlayer().getWorld();
-
-        if (cropData.isCustomBlock()) {
-            onCustomBlockBreak(event, cropData);
-            return;
-        }
 
         onNormalBlockBreak(event, cropData);
     }
 
-    private int getRandomInt(int min, int max) {
-        return (int)(Math.random() * ((max - min) + 1)) + min;
+    @EventHandler
+    public void onPlayerDamageEntity(EntityDamageByEntityEvent event) {
+        if (!(event.getDamager() instanceof Player)) return;
+        if (!(event.getEntity() instanceof ArmorStand)) return;
+
+        final ApplicableRegionSet regionSet = WorlGuardUtil.getRegionSet(event.getEntity().getLocation().getBlock());
+
+        if (!regionSet.testState(WorlGuardUtil.getBukkitPlayer((Player) event.getDamager()), Flags.INFINITE_CROPS))
+            return;
+
+        ArmorStand stand = (ArmorStand) event.getEntity();
+
+        CustomBlock cb = CansteinGottesdienst.BLOCKS.getBlock(stand.getPersistentDataContainer().getOrDefault(
+                CustomBlock.CUSTOM_BLOCK_TYPE_KEY,
+                PersistentDataType.STRING,
+                ""
+        ));
+        onCustomBlockBreak(event.getEntity().getLocation(), cb);
     }
 
-    private void onCustomBlockBreak(BlockBreakEvent event, CropInfo.CropData cropData) {
-        CustomBlock block = CansteinGottesdienst.BLOCKS.getBlock(event.getBlock().getType());
-        if(!block.isCustomBlock(event.getBlock().getLocation())) {
-            return;
-        }
+    @EventHandler
+    public void onEntityInteractEntity(PlayerInteractAtEntityEvent event){
+        if(!(event.getRightClicked() instanceof ArmorStand)) return;
 
+        final ApplicableRegionSet regionSet = WorlGuardUtil.getRegionSet(event.getRightClicked().getLocation().getBlock());
+
+        if (!regionSet.testState(WorlGuardUtil.getBukkitPlayer(event.getPlayer()), Flags.INFINITE_CROPS))
+            return;
+
+        ArmorStand stand = (ArmorStand) event.getRightClicked();
+        String id = stand.getPersistentDataContainer().getOrDefault(CustomBlock.CUSTOM_BLOCK_TYPE_KEY, PersistentDataType.STRING, "");
+        CustomBlock b = CansteinGottesdienst.BLOCKS.getBlock(id);
+        if(b == null) return;
+        if(b instanceof IHarvestable){
+            onCustomBlockHarvest(event.getRightClicked().getLocation(), b);
+        }
+    }
+
+    private int getRandomInt(int min, int max) {
+        return (int) (Math.random() * ((max - min) + 1)) + min;
+    }
+
+    private void onCustomBlockHarvest(Location loc, CustomBlock cb) {
         Bukkit.getScheduler().runTaskLater(CansteinGottesdienst.getInstance(), new Runnable() {
             @Override
             public void run() {
-                block.onBlockPlace(event.getBlock().getLocation());
+                ArmorStand stand = CustomBlock.getCustomBlockAt(loc);
+                if(stand != null) stand.remove();
+                cb.getConvertTo().onBlockPlace(loc);
             }
-        }, getRandomInt(40, 1000));
+        }, getRandomInt(40, 1000)); //
+    }
+
+    private void onCustomBlockBreak(Location loc, CustomBlock cb) {
+        Bukkit.getScheduler().runTaskLater(CansteinGottesdienst.getInstance(), new Runnable() {
+            @Override
+            public void run() {
+                cb.getConvertTo().onBlockPlace(loc);
+            }
+        }, getRandomInt(40, 1000)); // getRandomInt(40, 1000)
     }
 
     private void onNormalBlockBreak(BlockBreakEvent event, CropInfo.CropData cropData) {
@@ -62,14 +122,14 @@ public class BlockListener implements Listener {
 
         Ageable crop = ((Ageable) event.getBlock().getBlockData());
 
-        if(crop.getAge() != crop.getMaximumAge()) {
+        if (crop.getAge() != crop.getMaximumAge()) {
             return;
         }
 
         event.getBlock().setType(crop.getMaterial());
 
-        for(ItemStack drop : cropData.getItems()) {
-            event.getPlayer().getWorld().dropItem(event.getBlock().getLocation().add(0.5,-0.5,0.5), drop);
+        for (ItemStack drop : cropData.getItems()) {
+            event.getPlayer().getWorld().dropItem(event.getBlock().getLocation().add(0.5, -0.5, 0.5), drop);
         }
 
         Bukkit.getScheduler().runTaskLater(CansteinGottesdienst.getInstance(), new Runnable() {
@@ -79,7 +139,6 @@ public class BlockListener implements Listener {
 
                 event.getBlock().setBlockData(crop);
             }
-        }, getRandomInt(40, 1000));
+        }, getRandomInt(40, 1000)); // getRandomInt(40, 1000)
     }
 }
-*/

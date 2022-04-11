@@ -30,6 +30,7 @@ public class Blocks {
 
     public CustomBlock getFromDrop(ItemStack s){
         for(CustomBlock cb : blocks){
+            if(cb.getDropStack() == null) continue;
             if(cb.getDropStack().isSimilar(s)) return cb;
         }
         return null;
