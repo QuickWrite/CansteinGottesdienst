@@ -1,23 +1,6 @@
 package net.quickwrite.cansteingottesdienst.listener;
 
-import com.sk89q.worldguard.WorldGuard;
-import com.sk89q.worldguard.protection.ApplicableRegionSet;
-import com.sk89q.worldguard.protection.regions.RegionQuery;
-import net.quickwrite.cansteingottesdienst.CansteinGottesdienst;
-import net.quickwrite.cansteingottesdienst.blocks.CustomBlock;
-import net.quickwrite.cansteingottesdienst.util.CropInfo;
-import net.quickwrite.cansteingottesdienst.util.WorlGuardUtil;
-import net.quickwrite.cansteingottesdienst.util.storage.Flags;
-import org.bukkit.Bukkit;
-import org.bukkit.World;
-import org.bukkit.block.data.Ageable;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitRunnable;
-
+/*
 public class BlockListener implements Listener {
     private static final RegionQuery query;
 
@@ -25,9 +8,9 @@ public class BlockListener implements Listener {
         query = WorldGuard.getInstance().getPlatform().getRegionContainer().createQuery();
     }
 
-    /*
-     * Called when a block is broken.
-     */
+
+     // Called when a block is broken.
+
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
         final Player player = event.getPlayer();
@@ -99,3 +82,4 @@ public class BlockListener implements Listener {
         }, getRandomInt(40, 1000));
     }
 }
+*/

@@ -3,29 +3,25 @@ package net.quickwrite.cansteingottesdienst;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import net.quickwrite.cansteingottesdienst.blocks.Blocks;
 import net.quickwrite.cansteingottesdienst.blocks.CeleryBlock;
+import net.quickwrite.cansteingottesdienst.blocks.EmtpyGrapesBlock;
 import net.quickwrite.cansteingottesdienst.blocks.GrapesBlock;
-import net.quickwrite.cansteingottesdienst.blocks.WorldBlockPair;
 import net.quickwrite.cansteingottesdienst.builder.items.ItemBuilder;
 import net.quickwrite.cansteingottesdienst.commands.CustomBlockCommand;
 import net.quickwrite.cansteingottesdienst.commands.DebugCommand;
 import net.quickwrite.cansteingottesdienst.commands.rlgl.RedLightGreenLightCommand;
-import net.quickwrite.cansteingottesdienst.config.CustomBlockConfig;
+import net.quickwrite.cansteingottesdienst.commands.tabcomplete.CustomBlockCommandTabCompleter;
+import net.quickwrite.cansteingottesdienst.commands.tabcomplete.RedLightGreenLightTabCompleter;
 import net.quickwrite.cansteingottesdienst.listener.FoodListener;
 import net.quickwrite.cansteingottesdienst.listener.block.BlockInteractListener;
 import net.quickwrite.cansteingottesdienst.rlgl.RedLightGreenLightGame;
 import net.quickwrite.cansteingottesdienst.rlgl.RedLightGreenLightSettings;
-import net.quickwrite.cansteingottesdienst.commands.tabcomplete.CustomBlockCommandTabCompleter;
-import net.quickwrite.cansteingottesdienst.commands.tabcomplete.RedLightGreenLightTabCompleter;
-import net.quickwrite.cansteingottesdienst.util.CropInfo;
 import net.quickwrite.cansteingottesdienst.util.storage.Flags;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.command.TabCompleter;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
-import net.quickwrite.cansteingottesdienst.listener.BlockListener;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.PluginManager;
@@ -41,7 +37,6 @@ public final class CansteinGottesdienst extends JavaPlugin {
     public static WorldGuardPlugin WORLDGUARD_PLUGIN;
     public static String PREFIX = "[Gottesdienst] ";
     public static final String PATH = "canstein";
-    public static CustomBlockConfig CUSTOM_BLOCK_CONFIG;
 
     private RedLightGreenLightGame raceGame;
 
@@ -54,13 +49,12 @@ public final class CansteinGottesdienst extends JavaPlugin {
     public void onEnable() {
         instance = this;
         ConfigurationSerialization.registerClass(RedLightGreenLightSettings.class);
-        ConfigurationSerialization.registerClass(WorldBlockPair.class);
-        CUSTOM_BLOCK_CONFIG = new CustomBlockConfig();
 
         // registration of custom Blocks
         BLOCKS = new Blocks();
         BLOCKS.register(new CeleryBlock());
         BLOCKS.register(new GrapesBlock());
+        BLOCKS.register(new EmtpyGrapesBlock());
 
         initializeCrops();
 
@@ -72,7 +66,7 @@ public final class CansteinGottesdienst extends JavaPlugin {
         // register EventListener
         PluginManager pluginManager = getServer().getPluginManager();
 
-        pluginManager.registerEvents(new BlockListener(), this);
+        //pluginManager.registerEvents(new BlockListener(), this);
         pluginManager.registerEvents(new BlockInteractListener(), this);
         pluginManager.registerEvents(new FoodListener(), this);
     }
@@ -87,8 +81,7 @@ public final class CansteinGottesdienst extends JavaPlugin {
     @Override
     public void onDisable() {
         // Plugin shutdown logic
-        CropInfo.flush();
-        BLOCKS.save();
+        //CropInfo.flush();
     }
 
     public void initializeWorldGuard() {
@@ -129,6 +122,7 @@ public final class CansteinGottesdienst extends JavaPlugin {
     }
 
     private void initializeCrops() {
+        /*
         ArrayList<ItemStack> wheatDrop = new ArrayList<>();
         wheatDrop.add(new ItemBuilder(Material.WHEAT).setAmount(3).build());
 
@@ -140,5 +134,7 @@ public final class CansteinGottesdienst extends JavaPlugin {
 
         CropInfo.addCrop(new CeleryBlock());
         CropInfo.addCrop(new GrapesBlock());
+
+         */
     }
 }

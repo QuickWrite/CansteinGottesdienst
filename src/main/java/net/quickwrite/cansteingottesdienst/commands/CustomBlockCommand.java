@@ -2,6 +2,8 @@ package net.quickwrite.cansteingottesdienst.commands;
 
 import net.quickwrite.cansteingottesdienst.CansteinGottesdienst;
 import net.quickwrite.cansteingottesdienst.blocks.CustomBlock;
+import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -59,8 +61,10 @@ public class CustomBlockCommand implements CommandExecutor {
         if (args[1].equals("all")) {
             int size = 0;
 
-            for(CustomBlock block : CansteinGottesdienst.BLOCKS.getBlocks().values()) {
-                size += block.removeBlocks();
+            for(CustomBlock block : CansteinGottesdienst.BLOCKS.getBlocks()) {
+                for(World w : Bukkit.getWorlds()){
+                    size += block.removeBlocks(w);
+                }
             }
 
             sender.sendMessage("§cRemoved " + size + " custom blocks.");
@@ -69,7 +73,10 @@ public class CustomBlockCommand implements CommandExecutor {
         }
 
         CustomBlock customBlock = CansteinGottesdienst.BLOCKS.getBlock(args[1]);
-        int size = customBlock.removeBlocks();
+        int size = 0;
+        for(World w : Bukkit.getWorlds()){
+            size += customBlock.removeBlocks(w);
+        }
 
         sender.sendMessage("§cRemoved " + size + " custom blocks.");
 

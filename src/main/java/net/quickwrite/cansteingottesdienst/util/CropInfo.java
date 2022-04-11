@@ -7,7 +7,7 @@ import org.bukkit.inventory.ItemStack;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+/*
 public class CropInfo {
     private static final Map<Material, CropData> cropMap = new HashMap<>();
 
@@ -58,3 +58,5 @@ public class CropInfo {
         }
     }
 }
+
+ */
