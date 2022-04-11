@@ -131,4 +131,16 @@ public abstract class CustomBlock {
     public String getIdentifier() {
         return identifier;
     }
+
+    public ItemStack getHeadItem() {
+        return headItem;
+    }
+
+    public ItemStack getDropStack() {
+        return dropStack;
+    }
+
+    public HashMap<Location, ArmorStand> getArmorstands() {
+        return armorstands;
+    }
 }

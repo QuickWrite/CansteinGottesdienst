@@ -7,6 +7,7 @@ import net.quickwrite.cansteingottesdienst.blocks.GrapesBlock;
 import net.quickwrite.cansteingottesdienst.blocks.WorldBlockPair;
 import net.quickwrite.cansteingottesdienst.builder.items.ItemBuilder;
 import net.quickwrite.cansteingottesdienst.commands.CustomBlockCommand;
+import net.quickwrite.cansteingottesdienst.commands.DebugCommand;
 import net.quickwrite.cansteingottesdienst.commands.rlgl.RedLightGreenLightCommand;
 import net.quickwrite.cansteingottesdienst.config.CustomBlockConfig;
 import net.quickwrite.cansteingottesdienst.listener.FoodListener;
@@ -18,7 +19,9 @@ import net.quickwrite.cansteingottesdienst.commands.tabcomplete.RedLightGreenLig
 import net.quickwrite.cansteingottesdienst.util.CropInfo;
 import net.quickwrite.cansteingottesdienst.util.storage.Flags;
 import org.bukkit.Material;
+import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.PluginCommand;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import net.quickwrite.cansteingottesdienst.listener.BlockListener;
@@ -62,15 +65,9 @@ public final class CansteinGottesdienst extends JavaPlugin {
         initializeCrops();
 
         // register Commands
-        PluginCommand rlglCommand = getCommand("rlgl");
-        assert rlglCommand != null;
-        rlglCommand.setExecutor(new RedLightGreenLightCommand());
-        rlglCommand.setTabCompleter(new RedLightGreenLightTabCompleter());
-
-        PluginCommand customBlockCommand = getCommand("customblock");
-        assert customBlockCommand != null;
-        customBlockCommand.setExecutor(new CustomBlockCommand());
-        customBlockCommand.setTabCompleter(new CustomBlockCommandTabCompleter());
+        registerCommand("rlgl", new RedLightGreenLightCommand(), new RedLightGreenLightTabCompleter());
+        registerCommand("customblock", new CustomBlockCommand(), new CustomBlockCommandTabCompleter());
+        registerCommand("cdebug", new DebugCommand(), null);
 
         // register EventListener
         PluginManager pluginManager = getServer().getPluginManager();
@@ -78,6 +75,13 @@ public final class CansteinGottesdienst extends JavaPlugin {
         pluginManager.registerEvents(new BlockListener(), this);
         pluginManager.registerEvents(new BlockInteractListener(), this);
         pluginManager.registerEvents(new FoodListener(), this);
+    }
+
+    public void registerCommand(String name, CommandExecutor executor, TabCompleter tabCompleter){
+        PluginCommand command = getCommand(name);
+        assert command != null;
+        command.setExecutor(executor);
+        command.setTabCompleter(tabCompleter);
     }
 
     @Override

@@ -13,3 +13,6 @@ commands:
   customblock:
     description: "CustomBlock commands"
     usage: /customblock [get|remove] <id>
+  cdebug:
+    description: "Debug commands for this plugin (only for developers)"
+    usage: /cdebug
