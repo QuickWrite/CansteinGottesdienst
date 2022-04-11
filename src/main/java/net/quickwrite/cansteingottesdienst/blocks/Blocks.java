@@ -27,6 +27,13 @@ public class Blocks {
         }
         return null;
     }
+
+    public CustomBlock getFromDrop(ItemStack s){
+        for(CustomBlock cb : blocks){
+            if(cb.getDropStack().isSimilar(s)) return cb;
+        }
+        return null;
+    }
     public CustomBlock getBlock(String s){
         for(CustomBlock cb : blocks){
             if(cb.getIdentifier().equalsIgnoreCase(s)) return cb;

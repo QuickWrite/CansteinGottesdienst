@@ -10,7 +10,7 @@ public class GrapesBlock extends CustomBlock implements IHarvestable{
     public GrapesBlock() {
         super("grapes_block", new ItemBuilder(Material.SWEET_BERRIES).setCustomModelData(2).build(),
                 new ItemBuilder(Material.SWEET_BERRIES).setCustomModelData(1).setDisplayName("§5Trauben").build(),
-                new ItemBuilder(Material.SWEET_BERRIES).setCustomModelData(1).setDisplayName("§5Trauben (Place)").build());
+                new ItemBuilder(Material.SWEET_BERRIES).setCustomModelData(2).setDisplayName("§5Trauben (Place)").build());
     }
 
     @Override

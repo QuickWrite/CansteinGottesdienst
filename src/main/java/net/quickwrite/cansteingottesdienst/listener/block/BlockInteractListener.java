@@ -14,6 +14,8 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityInteractEvent;
+import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.persistence.PersistentDataType;
@@ -33,6 +35,7 @@ public class BlockInteractListener implements Listener {
 
         CustomBlock block = CansteinGottesdienst.BLOCKS.getBlock(event.getItem());
         if(block == null){
+            if(CansteinGottesdienst.BLOCKS.getFromDrop(event.getItem()) != null) event.setCancelled(true);
             return;
         }
         if(!event.getPlayer().hasPermission("canstein.customblocks.place." + block.getIdentifier())) return;
@@ -49,9 +52,35 @@ public class BlockInteractListener implements Listener {
     }
 
     @EventHandler
-    public void onPlayerInteractEntity(EntityDamageByEntityEvent event){
+    public void onEntityInteractEntity(PlayerInteractAtEntityEvent event){
+        if(!(event.getRightClicked() instanceof ArmorStand)) return;
+
+        ArmorStand stand = (ArmorStand) event.getRightClicked();
+
+        ApplicableRegionSet set = WorlGuardUtil.getRegionSet(event.getRightClicked().getLocation().getBlock());
+        if(!set.testState(WorlGuardUtil.getBukkitPlayer(event.getPlayer()), Flags.CUSTOM_BLOCKS)){
+            return;
+        }
+
+        String id = stand.getPersistentDataContainer().getOrDefault(CustomBlock.CUSTOM_BLOCK_TYPE_KEY, PersistentDataType.STRING, "");
+        CustomBlock b = CansteinGottesdienst.BLOCKS.getBlock(id);
+        if(b == null) return;
+        if(b instanceof IHarvestable){
+            ((IHarvestable) b).convert(stand);
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onEntityDamageEntity(EntityDamageByEntityEvent event){
         if(!(event.getDamager() instanceof Player)) return;
         if(!(event.getEntity() instanceof ArmorStand)) return;
+
+        ApplicableRegionSet set = WorlGuardUtil.getRegionSet(event.getEntity().getLocation().getBlock());
+        if(!set.testState(WorlGuardUtil.getBukkitPlayer((Player) event.getDamager()), Flags.CUSTOM_BLOCKS)){
+            return;
+        }
+
         ArmorStand stand = (ArmorStand) event.getEntity();
         if(stand.getPersistentDataContainer().getOrDefault(CustomBlock.BLOCK_KEY, PersistentDataType.INTEGER, 0) != 1){
             return;
