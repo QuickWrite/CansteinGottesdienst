@@ -5,6 +5,7 @@ import net.quickwrite.cansteingottesdienst.CansteinGottesdienst;
 import net.quickwrite.cansteingottesdienst.blocks.CustomBlock;
 import net.quickwrite.cansteingottesdienst.util.WorlGuardUtil;
 import net.quickwrite.cansteingottesdienst.util.storage.Flags;
+import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -35,8 +36,14 @@ public class BlockInteractListener implements Listener {
             return;
         }
         if(!event.getPlayer().hasPermission("canstein.customblocks.place." + block.getIdentifier())) return;
-        if(block.onBlockPlace(event.getClickedBlock().getLocation().add(event.getBlockFace().getModX(),
-                event.getBlockFace().getModY(), event.getBlockFace().getModZ()))){
+        Location place = event.getClickedBlock().getLocation().add(event.getBlockFace().getModX(), event.getBlockFace().getModY(), event.getBlockFace().getModZ());
+
+        if(!place.clone().add(0, -1, 0).getBlock().getType().isSolid() || place.getBlock().isEmpty()){
+            event.setCancelled(true);
+            return;
+        }
+
+        if(block.onBlockPlace(place)){
             event.setCancelled(true);
         }
     }
