@@ -2,6 +2,7 @@ package net.quickwrite.cansteingottesdienst.listener;
 
 import net.quickwrite.cansteingottesdienst.CansteinGottesdienst;
 import net.quickwrite.cansteingottesdienst.blocks.CustomBlock;
+import net.quickwrite.cansteingottesdienst.builder.items.ItemBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -12,13 +13,16 @@ import org.bukkit.entity.Item;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 
 public class ConveyorListener implements Listener {
 
@@ -64,6 +68,8 @@ public class ConveyorListener implements Listener {
                         Location loc = stand.getLocation();
                         Vector d = getDirection(getLocation(stand));
                         if (d == null) {
+                            endConvertItem(stand.getEquipment().getHelmet(), stand.getLocation());
+
                             removeStands.add(stand);
                             stand.remove();
                             continue;
@@ -103,6 +109,18 @@ public class ConveyorListener implements Listener {
             return d.getFacing().getDirection();
         }
         return null;
+    }
+
+    private void endConvertItem(ItemStack itemStack, Location location) {
+        ItemStack drop;
+
+        if (itemStack.getType().equals(Material.WHEAT)) {
+            drop = new ItemBuilder(Material.SUGAR).setCustomModelData(1).setDisplayName("§6Mehl").build();
+        } else {
+            drop = itemStack;
+        }
+
+        location.getWorld().dropItem(location.add(0, 1.7, 0.75), drop);
     }
 
 }
