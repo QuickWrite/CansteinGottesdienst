@@ -10,6 +10,7 @@ import net.quickwrite.cansteingottesdienst.blocks.GrapesBlock;
 import net.quickwrite.cansteingottesdienst.blocks.IHarvestable;
 import net.quickwrite.cansteingottesdienst.commands.CustomBlockCommand;
 import net.quickwrite.cansteingottesdienst.util.CropInfo;
+import net.quickwrite.cansteingottesdienst.util.Random;
 import net.quickwrite.cansteingottesdienst.util.WorlGuardUtil;
 import net.quickwrite.cansteingottesdienst.util.storage.Flags;
 import org.bukkit.Bukkit;
@@ -96,10 +97,6 @@ public class BlockListener implements Listener {
         }
     }
 
-    private int getRandomInt(int min, int max) {
-        return (int) (Math.random() * ((max - min) + 1)) + min;
-    }
-
     private void onCustomBlockHarvest(Location loc, CustomBlock cb) {
         Bukkit.getScheduler().runTaskLater(CansteinGottesdienst.getInstance(), new Runnable() {
             @Override
@@ -108,7 +105,7 @@ public class BlockListener implements Listener {
                 if(stand != null) stand.remove();
                 cb.getConvertTo().onBlockPlace(loc);
             }
-        }, getRandomInt(40, 1000)); //
+        }, Random.getRandomInt(40, 1000)); //
     }
 
     private void onCustomBlockBreak(Location loc, CustomBlock cb) {
@@ -117,7 +114,7 @@ public class BlockListener implements Listener {
             public void run() {
                 cb.getConvertTo().onBlockPlace(loc);
             }
-        }, getRandomInt(40, 1000)); // getRandomInt(40, 1000)
+        }, Random.getRandomInt(40, 1000)); // getRandomInt(40, 1000)
     }
 
     private void onNormalBlockBreak(BlockBreakEvent event, CropInfo.CropData cropData) {
@@ -146,6 +143,6 @@ public class BlockListener implements Listener {
 
                 event.getBlock().setBlockData(crop);
             }
-        }, getRandomInt(40, 1000)); // getRandomInt(40, 1000)
+        }, Random.getRandomInt(40, 1000)); // getRandomInt(40, 1000)
     }
 }

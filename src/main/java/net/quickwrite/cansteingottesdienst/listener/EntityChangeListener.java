@@ -1,8 +1,14 @@
 package net.quickwrite.cansteingottesdienst.listener;
 
+import net.quickwrite.cansteingottesdienst.CansteinGottesdienst;
+import net.quickwrite.cansteingottesdienst.blocks.CustomBlock;
 import net.quickwrite.cansteingottesdienst.builder.items.ItemBuilder;
+import net.quickwrite.cansteingottesdienst.util.Random;
 import net.quickwrite.cansteingottesdienst.util.storage.Flags;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Sheep;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -27,5 +33,12 @@ public class EntityChangeListener implements Listener {
         List<ItemStack> drops = event.getDrops();
         drops.clear();
         drops.add(new ItemBuilder(Material.MUTTON).setCustomModelData(1).build());
+
+        Bukkit.getScheduler().runTaskLater(CansteinGottesdienst.getInstance(), new Runnable() {
+            @Override
+            public void run() {
+                event.getEntity().getWorld().spawnEntity(event.getEntity().getLocation(), EntityType.SHEEP);
+            }
+        }, Random.getRandomInt(40, 1000));
     }
 }
