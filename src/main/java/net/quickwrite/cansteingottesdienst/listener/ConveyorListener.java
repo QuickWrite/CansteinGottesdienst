@@ -88,6 +88,8 @@ public class ConveyorListener implements Listener {
             entity.setInvisible(true);
         });
         movingArmorstands.put(stand, stand.getLocation());
+
+        item.remove();
     }
 
     public Location getLocation(ArmorStand stand){
