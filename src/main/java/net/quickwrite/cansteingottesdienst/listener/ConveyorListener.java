@@ -115,7 +115,7 @@ public class ConveyorListener implements Listener {
         ItemStack drop;
 
         if (itemStack.getType().equals(Material.WHEAT)) {
-            drop = new ItemBuilder(Material.SUGAR).setCustomModelData(1).setDisplayName("§6Mehl").build();
+            drop = new ItemBuilder(Material.SUGAR).setCustomModelData(1).setDisplayName("§6Mehl").setAmount(itemStack.getAmount()).build();
         } else {
             drop = itemStack;
         }
