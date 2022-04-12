@@ -19,7 +19,10 @@ public class CustomItemCommandTabCompleter implements TabCompleter {
         if(args.length <= 1) {
             final List<String> completions = new ArrayList<>();
             //copy matches of first argument from list (ex: if first arg is 'p' will return just 'pause')
-            StringUtil.copyPartialMatches(args[0], Arrays.stream(Items.values()).map(Items::getName).collect(Collectors.toList()), completions);
+            StringUtil.copyPartialMatches(args[0],
+                    Arrays.stream(Items.values()).map(item -> item.toString().toLowerCase()).collect(Collectors.toList()),
+                    completions
+            );
 
             //sort the list
             Collections.sort(completions);

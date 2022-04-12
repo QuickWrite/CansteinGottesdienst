@@ -6,6 +6,9 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+
+import java.util.Locale;
 
 public class CustomItemCommand implements CommandExecutor {
 
@@ -26,14 +29,14 @@ public class CustomItemCommand implements CommandExecutor {
             sender.sendMessage(CansteinGottesdienst.PREFIX + "§cPlease use §6/" + command.getName() + " <itemName>");
             return true;
         }
-        for(Items i : Items.values()){
-            if(i.matches(args[0])){
-                p.getInventory().addItem(i.getItemStack());
-                return true;
-            }
+
+        try {
+            ItemStack item = Items.valueOf(args[0].toUpperCase()).getItemStack();
+            p.getInventory().addItem(item);
+        } catch (IllegalArgumentException exception) {
+            sender.sendMessage(CansteinGottesdienst.PREFIX + "§cUnknown item with name §6" + args[0]);
         }
 
-        sender.sendMessage(CansteinGottesdienst.PREFIX + "§cUnknown item with name §6" + args[0]);
         return true;
     }
 }
