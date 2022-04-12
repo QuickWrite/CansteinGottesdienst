@@ -3,6 +3,7 @@ package net.quickwrite.cansteingottesdienst.listener;
 import net.quickwrite.cansteingottesdienst.CansteinGottesdienst;
 import net.quickwrite.cansteingottesdienst.blocks.CustomBlock;
 import net.quickwrite.cansteingottesdienst.builder.items.ItemBuilder;
+import net.quickwrite.cansteingottesdienst.items.Items;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -115,7 +116,8 @@ public class ConveyorListener implements Listener {
         ItemStack drop;
 
         if (itemStack.getType().equals(Material.WHEAT)) {
-            drop = new ItemBuilder(Material.SUGAR).setCustomModelData(1).setDisplayName("§6Mehl").setAmount(itemStack.getAmount()).build();
+            drop = Items.FLOUR.getItemStack().clone();
+            drop.setAmount(itemStack.getAmount());
         } else {
             drop = itemStack;
         }
