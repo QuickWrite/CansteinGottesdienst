@@ -8,6 +8,7 @@ import org.bukkit.inventory.ItemStack;
 public enum Items {
 
     BREAD(new ItemBuilder(Material.BREAD).setDisplayName("§6Bread").build()),
+    OX_TONGUE(new ItemBuilder(Material.DANDELION).setDisplayName("§2Bitterkraut").setCustomModelData(1).build())
     ;
 
     private final ItemStack stack;

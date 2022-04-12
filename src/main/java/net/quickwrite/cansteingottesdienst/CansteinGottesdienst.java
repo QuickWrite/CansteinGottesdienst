@@ -1,10 +1,7 @@
 package net.quickwrite.cansteingottesdienst;
 
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
-import net.quickwrite.cansteingottesdienst.blocks.Blocks;
-import net.quickwrite.cansteingottesdienst.blocks.CeleryBlock;
-import net.quickwrite.cansteingottesdienst.blocks.EmtpyGrapesBlock;
-import net.quickwrite.cansteingottesdienst.blocks.GrapesBlock;
+import net.quickwrite.cansteingottesdienst.blocks.*;
 import net.quickwrite.cansteingottesdienst.builder.items.ItemBuilder;
 import net.quickwrite.cansteingottesdienst.commands.CustomBlockCommand;
 import net.quickwrite.cansteingottesdienst.commands.CustomItemCommand;
@@ -58,6 +55,7 @@ public final class CansteinGottesdienst extends JavaPlugin {
         BLOCKS.register(new CeleryBlock());
         BLOCKS.register(new GrapesBlock());
         BLOCKS.register(new EmtpyGrapesBlock());
+        BLOCKS.register(new OxTongueBlock());
 
         initializeCrops();
 
