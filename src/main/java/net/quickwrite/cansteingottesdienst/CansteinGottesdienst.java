@@ -7,14 +7,13 @@ import net.quickwrite.cansteingottesdienst.blocks.EmtpyGrapesBlock;
 import net.quickwrite.cansteingottesdienst.blocks.GrapesBlock;
 import net.quickwrite.cansteingottesdienst.builder.items.ItemBuilder;
 import net.quickwrite.cansteingottesdienst.commands.CustomBlockCommand;
+import net.quickwrite.cansteingottesdienst.commands.CustomItemCommand;
 import net.quickwrite.cansteingottesdienst.commands.DebugCommand;
 import net.quickwrite.cansteingottesdienst.commands.rlgl.RedLightGreenLightCommand;
 import net.quickwrite.cansteingottesdienst.commands.tabcomplete.CustomBlockCommandTabCompleter;
+import net.quickwrite.cansteingottesdienst.commands.tabcomplete.CustomItemCommandTabCompleter;
 import net.quickwrite.cansteingottesdienst.commands.tabcomplete.RedLightGreenLightTabCompleter;
-import net.quickwrite.cansteingottesdienst.listener.BlockListener;
-import net.quickwrite.cansteingottesdienst.listener.ConveyorListener;
-import net.quickwrite.cansteingottesdienst.listener.EntityChangeListener;
-import net.quickwrite.cansteingottesdienst.listener.FoodListener;
+import net.quickwrite.cansteingottesdienst.listener.*;
 import net.quickwrite.cansteingottesdienst.listener.block.BlockInteractListener;
 import net.quickwrite.cansteingottesdienst.rlgl.RedLightGreenLightGame;
 import net.quickwrite.cansteingottesdienst.rlgl.RedLightGreenLightSettings;
@@ -66,6 +65,7 @@ public final class CansteinGottesdienst extends JavaPlugin {
         registerCommand("rlgl", new RedLightGreenLightCommand(), new RedLightGreenLightTabCompleter());
         registerCommand("customblock", new CustomBlockCommand(), new CustomBlockCommandTabCompleter());
         registerCommand("cdebug", new DebugCommand(), null);
+        registerCommand("customItem", new CustomItemCommand(), new CustomItemCommandTabCompleter());
 
         // register EventListener
         PluginManager pluginManager = getServer().getPluginManager();
@@ -75,6 +75,7 @@ public final class CansteinGottesdienst extends JavaPlugin {
         pluginManager.registerEvents(new FoodListener(), this);
         pluginManager.registerEvents(new ConveyorListener(), this);
         pluginManager.registerEvents(new EntityChangeListener(), this);
+        //pluginManager.registerEvents(new MapListener(), this);
     }
 
     public void registerCommand(String name, CommandExecutor executor, TabCompleter tabCompleter){
