@@ -12,6 +12,11 @@ import org.bukkit.entity.Player;
 public class CustomBlockCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if (args.length == 0) {
+            sender.sendMessage(CansteinGottesdienst.PREFIX + "§cPlease use §6/" + command.getName() + " get <id>");
+            return true;
+        }
+
         if (args[0].equals("get")) {
             return getCustomBlock(sender, command, args);
         }
@@ -28,11 +33,13 @@ public class CustomBlockCommand implements CommandExecutor {
             sender.sendMessage(CansteinGottesdienst.PREFIX + "§cYou have to be a player to use this command");
             return true;
         }
+
         Player p = (Player) sender;
         if(!p.hasPermission("canstein.get.customblock")){
             p.sendMessage(CansteinGottesdienst.PREFIX + "§cYou don't have permission to use this command");
             return true;
         }
+
         if(args.length != 2){
             p.sendMessage(CansteinGottesdienst.PREFIX + "§cPlease use §6/" + command.getName() + " get <id>");
             return true;
