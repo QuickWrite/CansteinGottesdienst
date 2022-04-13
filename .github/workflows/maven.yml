@@ -28,5 +28,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: Artifacts
-        path: /home/runner/work/CansteinGottesdienst/CansteinGottesdienst/target/
+        path: |
+            ~/**/target/*.jar
+            ![original]-*.jar
         retention-days: 5
