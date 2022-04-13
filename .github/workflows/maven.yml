@@ -29,5 +29,6 @@ jobs:
       with:
         name: Artifacts
         path: |
-            ~/**/target/(![original-])*.jar
+            ~/**/target/*.jar
+            ![original]-*.jar
         retention-days: 5
