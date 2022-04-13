@@ -23,10 +23,10 @@ jobs:
         distribution: 'temurin'
         cache: maven
     - name: Build with Maven
-      run: mvn -B package -DoutputDirectory=build/libs/ --file pom.xml
+      run: mvn -B package --file pom.xml
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v2
       with:
         name: Artifacts
-        path: build/libs/
+        path: /home/runner/work/CansteinGottesdienst/CansteinGottesdienst/target/
         retention-days: 5
