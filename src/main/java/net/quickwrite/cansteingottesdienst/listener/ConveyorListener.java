@@ -87,6 +87,7 @@ public class ConveyorListener implements Listener {
     }
 
     public void convertItem(Item item){
+        if(item.getItemStack().getType().isAir()) return;
         ArmorStand stand = item.getLocation().getWorld().spawn(CustomBlock.normalizeLocation(item.getLocation()).subtract(0, 1.69, 0.75), ArmorStand.class, entity -> {
             entity.getEquipment().setItem(EquipmentSlot.HEAD, item.getItemStack());
             entity.setHeadPose(new EulerAngle(Math.toRadians(90), 0, 0));
