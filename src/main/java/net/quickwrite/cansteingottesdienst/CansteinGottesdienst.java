@@ -12,6 +12,7 @@ import net.quickwrite.cansteingottesdienst.commands.tabcomplete.CustomItemComman
 import net.quickwrite.cansteingottesdienst.commands.tabcomplete.RedLightGreenLightTabCompleter;
 import net.quickwrite.cansteingottesdienst.listener.*;
 import net.quickwrite.cansteingottesdienst.listener.block.BlockInteractListener;
+import net.quickwrite.cansteingottesdienst.map.ImageManager;
 import net.quickwrite.cansteingottesdienst.rlgl.RedLightGreenLightGame;
 import net.quickwrite.cansteingottesdienst.rlgl.RedLightGreenLightSettings;
 import net.quickwrite.cansteingottesdienst.util.CropInfo;
@@ -73,7 +74,7 @@ public final class CansteinGottesdienst extends JavaPlugin {
         pluginManager.registerEvents(new FoodListener(), this);
         pluginManager.registerEvents(new ConveyorListener(), this);
         pluginManager.registerEvents(new EntityChangeListener(), this);
-        //pluginManager.registerEvents(new MapListener(), this);
+        pluginManager.registerEvents(new MapListener(), this);
     }
 
     public void registerCommand(String name, CommandExecutor executor, TabCompleter tabCompleter){
