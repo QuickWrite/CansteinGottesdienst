@@ -9,13 +9,16 @@ depend: [ WorldGuard ]
 commands:
   rlgl:
     description: "RLGL"
-    usage: /rlgl <start/stop/setup>
+    usage: "/rlgl <start/stop/setup>"
   customblock:
     description: "CustomBlock commands"
-    usage: /customblock [get|remove] <id>
+    usage: "/customblock [get|remove] <id>"
   cdebug:
     description: "Debug commands for this plugin (only for developers)"
-    usage: /cdebug
+    usage: "/cdebug"
   customItem:
     description: "CustomItem commands"
-    usage: /customItem <id>
+    usage: "/customItem <id>"
+  pmsg:
+    description: "Sends messages as another entity"
+    usage: "/pmsg <name> <message>"

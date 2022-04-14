@@ -6,6 +6,7 @@ import net.quickwrite.cansteingottesdienst.builder.items.ItemBuilder;
 import net.quickwrite.cansteingottesdienst.commands.CustomBlockCommand;
 import net.quickwrite.cansteingottesdienst.commands.CustomItemCommand;
 import net.quickwrite.cansteingottesdienst.commands.DebugCommand;
+import net.quickwrite.cansteingottesdienst.commands.PMsgCommand;
 import net.quickwrite.cansteingottesdienst.commands.rlgl.RedLightGreenLightCommand;
 import net.quickwrite.cansteingottesdienst.commands.tabcomplete.CustomBlockCommandTabCompleter;
 import net.quickwrite.cansteingottesdienst.commands.tabcomplete.CustomItemCommandTabCompleter;
@@ -69,6 +70,7 @@ public final class CansteinGottesdienst extends JavaPlugin {
         registerCommand("customblock", new CustomBlockCommand(), new CustomBlockCommandTabCompleter());
         registerCommand("cdebug", new DebugCommand(), null);
         registerCommand("customItem", new CustomItemCommand(), new CustomItemCommandTabCompleter());
+        registerCommand("pmsg", new PMsgCommand(), null);
 
         // register EventListener
         PluginManager pluginManager = getServer().getPluginManager();
