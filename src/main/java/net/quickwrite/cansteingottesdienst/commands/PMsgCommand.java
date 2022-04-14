@@ -7,23 +7,48 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.Arrays;
-import java.util.stream.Collectors;
+import java.util.HashMap;
+import java.util.Map;
 
 public class PMsgCommand implements CommandExecutor {
+    private final Map<Player, String> playerMap = new HashMap<>();
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (args.length < 2) {
-            sender.sendMessage(CansteinGottesdienst.PREFIX + "§cPlease use §6/" + command.getName() + " <name> <message>");
+        if (!(sender instanceof Player)) {
+            sender.sendMessage(CansteinGottesdienst.PREFIX + "§cYou have to be a player to use this command!");
             return true;
         }
 
         if (!sender.hasPermission("canstein.pmsg"))
             return true;
 
-        for (Player player : sender.getServer().getOnlinePlayers()) {
-            player.sendMessage("[" + format(args[0]) + "§r]: " +
-                    format(Arrays.stream(args).skip(1).collect(Collectors.joining(" "))));
+        if (args.length == 0) {
+            String remove = null;
+
+            if((remove = playerMap.remove((Player)sender)) != null) {
+                sender.sendMessage(CansteinGottesdienst.PREFIX + "§aSuccessfully removed " + remove + "§r!");
+                return true;
+            }
+
+            sender.sendMessage(CansteinGottesdienst.PREFIX + "§cYou are not in the list.");
+
+            return true;
+        }
+
+        Player player = (Player) sender;
+
+        if (playerMap.get(player) == null) {
+            playerMap.put(player, format(String.join(" ", args)));
+
+            sender.sendMessage(CansteinGottesdienst.PREFIX + "§aSuccessfully added " +
+                    format(String.join(" ", args)) + "§r.");
+            return true;
+        }
+
+        for (Player serverPlayer : sender.getServer().getOnlinePlayers()) {
+            serverPlayer.sendMessage("[" + playerMap.get(player) + "§r]: " +
+                    format(String.join(" ", args)));
         }
 
         return true;
