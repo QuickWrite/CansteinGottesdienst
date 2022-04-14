@@ -2,7 +2,6 @@ package net.quickwrite.cansteingottesdienst.map;
 
 import net.quickwrite.cansteingottesdienst.CansteinGottesdienst;
 import net.quickwrite.cansteingottesdienst.items.Items;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
@@ -10,19 +9,19 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
 
-public class InformationGatherer {
+public class MapInformation {
 
-    public static final InformationGatherer INSTANCE;
+    public static final MapInformation INSTANCE;
 
     private final HashMap<Items, Integer> toSearchAmounts;
     private final HashMap<String, Integer> amounts;
     private int x, y, z;
 
     static {
-        INSTANCE = new InformationGatherer();
+        INSTANCE = new MapInformation();
     }
 
-    private InformationGatherer() {
+    private MapInformation() {
         amounts = new HashMap<>();
         toSearchAmounts = new HashMap<>();
 

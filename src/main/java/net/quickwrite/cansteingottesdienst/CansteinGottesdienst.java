@@ -10,6 +10,7 @@ import net.quickwrite.cansteingottesdienst.commands.rlgl.RedLightGreenLightComma
 import net.quickwrite.cansteingottesdienst.commands.tabcomplete.CustomBlockCommandTabCompleter;
 import net.quickwrite.cansteingottesdienst.commands.tabcomplete.CustomItemCommandTabCompleter;
 import net.quickwrite.cansteingottesdienst.commands.tabcomplete.RedLightGreenLightTabCompleter;
+import net.quickwrite.cansteingottesdienst.config.MapInformationConfig;
 import net.quickwrite.cansteingottesdienst.listener.*;
 import net.quickwrite.cansteingottesdienst.listener.block.BlockInteractListener;
 import net.quickwrite.cansteingottesdienst.map.ImageManager;
@@ -40,6 +41,7 @@ public final class CansteinGottesdienst extends JavaPlugin {
     public static final String PATH = "canstein";
 
     private RedLightGreenLightGame raceGame;
+    private MapInformationConfig mapInformationConfig;
 
     @Override
     public void onLoad() {
@@ -50,6 +52,8 @@ public final class CansteinGottesdienst extends JavaPlugin {
     public void onEnable() {
         instance = this;
         ConfigurationSerialization.registerClass(RedLightGreenLightSettings.class);
+
+        mapInformationConfig = new MapInformationConfig();
 
         // registration of custom Blocks
         BLOCKS = new Blocks();

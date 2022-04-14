@@ -2,15 +2,10 @@ package net.quickwrite.cansteingottesdienst.map;
 
 import net.quickwrite.cansteingottesdienst.items.Items;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.map.*;
 
-import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.awt.image.PixelGrabber;
-import java.nio.Buffer;
 import java.util.HashMap;
-import java.util.Locale;
 
 public class DisplayMapRenderer extends MapRenderer {
 
@@ -30,7 +25,7 @@ public class DisplayMapRenderer extends MapRenderer {
     }
 
     private void loadImages() {
-        InformationGatherer gatherer = InformationGatherer.INSTANCE;
+        MapInformation gatherer = MapInformation.INSTANCE;
         for(String key : gatherer.getAmounts().keySet()){
             images.put(key, ImageManager.INSTANCE.loadImage(key));
         }
@@ -46,7 +41,7 @@ public class DisplayMapRenderer extends MapRenderer {
             }
         }
         int y = 5;
-        InformationGatherer informationGatherer = InformationGatherer.INSTANCE;
+        MapInformation informationGatherer = MapInformation.INSTANCE;
         for(Items item : informationGatherer.getToSearchAmounts().keySet()){
             BufferedImage image = images.get(item.name());
 
