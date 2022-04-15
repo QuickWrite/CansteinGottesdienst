@@ -70,6 +70,7 @@ public class DisplayMapRenderer extends MapRenderer {
     public void drawItemProgress(MapCanvas canvas, Items item, int y){
         int x = 5;
         drawImage(images.get(item.name()), x, y, canvas);
+        y += 1;
         MapInformation information = MapInformation.INSTANCE;
 
         int available = information.getAmounts().get(item.name());
