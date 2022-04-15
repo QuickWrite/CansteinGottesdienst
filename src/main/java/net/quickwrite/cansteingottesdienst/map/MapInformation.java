@@ -3,6 +3,7 @@ package net.quickwrite.cansteingottesdienst.map;
 import net.quickwrite.cansteingottesdienst.CansteinGottesdienst;
 import net.quickwrite.cansteingottesdienst.items.Items;
 import org.bukkit.Location;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -34,7 +35,7 @@ public class MapInformation {
             @Override
             public void run() {
                 if(item.isOnGround()){
-                    if(item.getLocation().distance(new Location(item.getWorld(), x + .5, y + .5, z + .5)) < 1) {
+                    if(item.getLocation().distance(new Location(item.getWorld(), x + .5, y + .5, z + .5)) < 3) {
                         ItemStack itemStack = item.getItemStack();
                         if(addItem(itemStack, itemStack.getAmount()))
                             item.remove();
@@ -46,12 +47,15 @@ public class MapInformation {
     }
 
     private void loadFromConfig(){
-        toSearchAmounts.put(Items.BREAD, 30);
+        FileConfiguration config = CansteinGottesdienst.getInstance().getMapInformationConfig().getConfig();
+        x = config.getInt("map.information.x",233);
+        y = config.getInt("map.information.y",88);
+        z = config.getInt("map.information.z",280);
+        toSearchAmounts.put(Items.BREAD, 20);
         toSearchAmounts.put(Items.CELERY, 30);
-        x = -242;
-        y = 85;
-        z = -103;
 
+
+        CansteinGottesdienst.getInstance().getMapInformationConfig().saveConfig();
         convert();
     }
 

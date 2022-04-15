@@ -41,8 +41,13 @@ public class DisplayMapRenderer extends MapRenderer {
                 canvas.setPixel(x, y, MapPalette.matchColor(Color.WHITE));
             }
         }
-        int y = 5;
+
         MapInformation informationGatherer = MapInformation.INSTANCE;
+
+        String text = "Zutatenliste";
+        canvas.drawText((128 - MinecraftFont.Font.getWidth(text)) / 2, 4, MinecraftFont.Font, text);
+
+        int y = MinecraftFont.Font.getHeight() + 10;
         for(Items item : informationGatherer.getToSearchAmounts().keySet()){
             BufferedImage image = images.get(item.name());
             drawItemProgress(canvas, item, y);
@@ -68,15 +73,15 @@ public class DisplayMapRenderer extends MapRenderer {
     }
 
     public void drawItemProgress(MapCanvas canvas, Items item, int y){
-        int x = 5;
+        int x = 7;
         drawImage(images.get(item.name()), x, y, canvas);
-        y += 1;
+        y += 2;
         MapInformation information = MapInformation.INSTANCE;
 
         int available = information.getAmounts().get(item.name());
         int toSearch = information.getToSearchAmounts().get(item);
 
-        float div = (toSearch / (available + 0.001f));
+        float div = (available / (toSearch + 0f));
 
         byte color;
         if (div < .25) color = MapPalette.matchColor(Color.RED);
@@ -85,21 +90,27 @@ public class DisplayMapRenderer extends MapRenderer {
         else color = MapPalette.matchColor(Color.GREEN);
 
         int width = 128 - 16 - 2*x - 5;
-        for (int oy = 0; oy < 14; oy++){
+        for (int oy = 0; oy < 13; oy++){
             for (int ox = 0; ox < width; ox++){
-                if(oy == 0 || oy == 13 || ox == 0 || ox == width - 1)
+                if(oy == 0 || oy == 12 || ox == 0 || ox == width - 1)
                     canvas.setPixel(x + ox + 16 + 5, y + oy, color);
             }
         }
 
         for (int oy = 0; oy < 11; oy++) {
             for (int ox = 0; ox < width; ox++) {
-                float rate = width / (ox + 0f);
+                float rate = ox / (width + 0f);
                 if(rate < div){
                     canvas.setPixel(x + ox + 16 + 5, y + oy + 1, color);
                 }
             }
         }
+
+        String text = available + " / " + toSearch;
+        canvas.drawText(x + 16 + 5 + (width - MinecraftFont.Font.getWidth(text)) / 2,
+                y - 1 + (16 - MinecraftFont.Font.getHeight()) / 2, MinecraftFont.Font, text);
+
+
     }
 
     public void drawImage(BufferedImage image, int px, int py, MapCanvas canvas){
