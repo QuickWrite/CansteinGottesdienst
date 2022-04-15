@@ -75,7 +75,7 @@ public class DisplayMapRenderer extends MapRenderer {
         int available = information.getAmounts().get(item.name());
         int toSearch = information.getToSearchAmounts().get(item);
 
-        float div = (toSearch / (available + 0f));
+        float div = (toSearch / (available + 0.001f));
 
         byte color;
         if (div < .25) color = MapPalette.matchColor(Color.RED);
@@ -95,7 +95,7 @@ public class DisplayMapRenderer extends MapRenderer {
             for (int ox = 0; ox < width; ox++) {
                 float rate = width / (ox + 0f);
                 if(rate < div){
-                    canvas.setPixel(x + ox + 16 + 5, y + oy, color);
+                    canvas.setPixel(x + ox + 16 + 5, y + oy + 1, color);
                 }
             }
         }
