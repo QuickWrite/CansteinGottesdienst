@@ -22,6 +22,8 @@ public class TrackerMapCommandTabCompleter implements TabCompleter {
 
         if (args.length <= 1) {
             completions.add("get");
+            completions.add("reload");
+            completions.add("reset");
 
             return completions;
         }

@@ -51,8 +51,9 @@ public class MapInformation {
         }.runTaskTimer(CansteinGottesdienst.getInstance(), 0, 1);
     }
 
-    private void loadFromConfig(){
+    public void loadFromConfig(){
         FileConfiguration config = CansteinGottesdienst.getInstance().getMapInformationConfig().getConfig();
+        toSearchAmounts.clear();
         if(!config.contains("map.information")){
             toSearchAmounts.put(Items.BREAD, 10);
             toSearchAmounts.put(Items.CELERY, 10);

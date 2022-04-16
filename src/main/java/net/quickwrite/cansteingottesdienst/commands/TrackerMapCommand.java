@@ -56,6 +56,11 @@ public class TrackerMapCommand implements CommandExecutor {
         if (args.length < 2) {
             if (args[1].equalsIgnoreCase("reset")){
                 MapInformation.INSTANCE.reset();
+                sender.sendMessage(CansteinGottesdienst.PREFIX + "§aResetted Map");
+                return true;
+            }else if (args[1].equalsIgnoreCase("reload")){
+                MapInformation.INSTANCE.loadFromConfig();
+                sender.sendMessage(CansteinGottesdienst.PREFIX + "§aReloaded Map");
                 return true;
             }
             this.setMapItem(player, map);
