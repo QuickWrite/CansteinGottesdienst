@@ -13,9 +13,9 @@ commands:
   customblock:
     description: "CustomBlock commands"
     usage: "/customblock [get|remove] <id>"
-  cdebug:
+  initmap:
     description: "Debug commands for this plugin (only for developers)"
-    usage: "/cdebug"
+    usage: "/initmap"
   customItem:
     description: "CustomItem commands"
     usage: "/customItem <id>"

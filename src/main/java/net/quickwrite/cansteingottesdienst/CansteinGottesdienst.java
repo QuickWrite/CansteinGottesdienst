@@ -77,7 +77,7 @@ public final class CansteinGottesdienst extends JavaPlugin {
         // register Commands
         registerCommand("rlgl", new RedLightGreenLightCommand(), new RedLightGreenLightTabCompleter());
         registerCommand("customblock", new CustomBlockCommand(), new CustomBlockCommandTabCompleter());
-        registerCommand("cdebug", new DebugCommand(), null);
+        registerCommand("initMap", new DebugCommand(), null);
         registerCommand("customItem", new CustomItemCommand(), new CustomItemCommandTabCompleter());
         registerCommand("pmsg", new PMsgCommand(), null);
         registerCommand("trackerMap", new TrackerMapCommand(), new TrackerMapCommandTabCompleter());

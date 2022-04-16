@@ -56,6 +56,9 @@ public class MapInformation {
         if(!config.contains("map.information")){
             toSearchAmounts.put(Items.BREAD, 10);
             toSearchAmounts.put(Items.CELERY, 10);
+            toSearchAmounts.put(Items.OX_TONGUE_POWDER, 10);
+            toSearchAmounts.put(Items.WINE, 10);
+            toSearchAmounts.put(Items.COOKED_LAMB_GIGOT, 10);
             save();
             convert();
             return;
