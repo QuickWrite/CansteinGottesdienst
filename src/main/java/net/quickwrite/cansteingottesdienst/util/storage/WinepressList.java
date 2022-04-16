@@ -3,11 +3,13 @@ package net.quickwrite.cansteingottesdienst.util.storage;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import net.quickwrite.cansteingottesdienst.CansteinGottesdienst;
 import net.quickwrite.cansteingottesdienst.items.Items;
+import net.quickwrite.cansteingottesdienst.util.Placeholder;
 import net.quickwrite.cansteingottesdienst.util.worldguard.WorlGuardUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.configuration.Configuration;
 import org.bukkit.entity.ArmorStand;
 
 import java.util.HashMap;
@@ -15,6 +17,16 @@ import java.util.Map;
 
 public class WinepressList {
     public static Map<ProtectedRegion, WinepressInfo> WINEPRESSES = new HashMap<>();
+
+    public static String grapes_hologram;
+    public static String jump_hologram;
+
+    static {
+        Configuration config = CansteinGottesdienst.getInstance().getDefaultConfig().getConfig();
+
+        grapes_hologram = config.getString("winepress.grapes_hologram", "%current% / %max% Trauben");
+        jump_hologram = config.getString("winepress.jump_hologram", "%jumps% / %needed_jumps% Sprünge");
+    }
 
     public static WinepressInfo getInfo(ProtectedRegion region, World world) {
         WinepressInfo info = WINEPRESSES.get(region);
@@ -147,11 +159,13 @@ public class WinepressList {
         }
 
         private String hologramAdd() {
-            return this.current + " / " + (max + 1) + " Trauben";
+            return Placeholder.replace(Placeholder.replace(grapes_hologram, "current", this.current),
+                    "max", (max + 1));
         }
 
         private String hologramJump() {
-            return this.jumps + " / " + this.neededJumps + " Sprünge";
+            return Placeholder.replace(Placeholder.replace(jump_hologram, "jumps", this.jumps),
+                    "needed_jumps", this.neededJumps);
         }
 
         public void delete() {
