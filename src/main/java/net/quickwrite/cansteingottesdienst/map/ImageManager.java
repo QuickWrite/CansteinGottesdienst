@@ -25,7 +25,6 @@ public class ImageManager {
     }
 
     private void unpack() {
-        System.out.println("Unpack");
         File f = new File(CansteinGottesdienst.getInstance().getDataFolder(), "images");
         if(!f.exists()){
             f.getParentFile().mkdirs();
