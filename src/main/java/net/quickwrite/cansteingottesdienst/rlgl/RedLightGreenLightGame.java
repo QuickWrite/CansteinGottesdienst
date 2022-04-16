@@ -16,6 +16,7 @@ public class RedLightGreenLightGame {
 
     private final ArrayList<Player> playingPlayers;
     private ArrayList<Player> alivePlayers;
+    private ArrayList<Player> onlySound;
     private BukkitTask current;
     private final Random random;
     private final HashMap<Player, Location> startingLocations;
@@ -23,7 +24,15 @@ public class RedLightGreenLightGame {
     public static final String SETTINGS_PATH = CansteinGottesdienst.PATH + ".rlgl.settings";
 
     public RedLightGreenLightGame(World world){
-        playingPlayers = new ArrayList<>(world.getPlayers());
+        playingPlayers = new ArrayList<>();
+        onlySound = new ArrayList<>();
+        for(Player p : world.getPlayers()){
+            if(!p.hasPermission("canstein.rlgl.bypass")) {
+                playingPlayers.add(p);
+            }else{
+                onlySound.add(p);
+            }
+        }
         alivePlayers = (ArrayList<Player>) playingPlayers.clone();
         random = new Random();
         startingLocations = new HashMap<>();
@@ -49,6 +58,10 @@ public class RedLightGreenLightGame {
             p.playSound(p.getLocation(), settings.getSound(), 10, 1);
             p.sendTitle(settings.getTitleRun(), "", 0, 20*2, 0);
         }
+        for(Player p : onlySound){
+            p.playSound(p.getLocation(), settings.getSound(), 10, 1);
+            p.sendTitle(settings.getTitleRun(), "", 0, 20*2, 0);
+        }
         current = new BukkitRunnable(){
 
             @Override
@@ -63,11 +76,14 @@ public class RedLightGreenLightGame {
                         p.stopSound(settings.getSound());
                         p.sendTitle(settings.getTitleHalt(), "", 0, 20*2, 0);
                     }
+                    for(Player p : onlySound){
+                        p.stopSound(settings.getSound());
+                        p.sendTitle(settings.getTitleHalt(), "", 0, 20*2, 0);
+                    }
                 }
                 for(int i = playingPlayers.size() - 1; i >= 0; i--){
                     Player p = playingPlayers.get(i);
                     if(hasFinished(p)){
-                        p.sendMessage("FINISHED");
                         playingPlayers.remove(p);
                         p.stopSound(settings.getSound());
                         if(playingPlayers.size() == 0){
