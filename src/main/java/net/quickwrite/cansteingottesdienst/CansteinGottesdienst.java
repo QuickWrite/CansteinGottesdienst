@@ -156,10 +156,10 @@ public final class CansteinGottesdienst extends JavaPlugin {
     private void initializeCrops() {
 
         ArrayList<ItemStack> wheatDrop = new ArrayList<>();
-        wheatDrop.add(new ItemBuilder(Material.WHEAT).setAmount(3).build());
+        wheatDrop.add(new ItemBuilder(Material.WHEAT).build());
 
         ArrayList<ItemStack> carrotDrop = new ArrayList<>();
-        carrotDrop.add(new ItemBuilder(Material.CARROT).setAmount(3).build());
+        carrotDrop.add(new ItemBuilder(Material.CARROT).build());
 
         CropInfo.addCrop(Material.WHEAT, wheatDrop);
         CropInfo.addCrop(Material.CARROTS, carrotDrop);
