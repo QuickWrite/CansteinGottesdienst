@@ -3,6 +3,9 @@ package net.quickwrite.cansteingottesdienst;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import net.quickwrite.cansteingottesdienst.blocks.*;
 import net.quickwrite.cansteingottesdienst.builder.items.ItemBuilder;
+import net.quickwrite.cansteingottesdienst.builder.recipes.FurnaceRecipeBuilder;
+import net.quickwrite.cansteingottesdienst.builder.recipes.ShapedRecipeBuilder;
+import net.quickwrite.cansteingottesdienst.builder.recipes.ShapelessRecipeBuilder;
 import net.quickwrite.cansteingottesdienst.commands.*;
 import net.quickwrite.cansteingottesdienst.commands.rlgl.RedLightGreenLightCommand;
 import net.quickwrite.cansteingottesdienst.commands.tabcomplete.CustomBlockCommandTabCompleter;
@@ -14,27 +17,26 @@ import net.quickwrite.cansteingottesdienst.config.MapInformationConfig;
 import net.quickwrite.cansteingottesdienst.items.Items;
 import net.quickwrite.cansteingottesdienst.listener.*;
 import net.quickwrite.cansteingottesdienst.listener.block.BlockInteractListener;
-import net.quickwrite.cansteingottesdienst.map.DisplayMapRenderer;
-import net.quickwrite.cansteingottesdienst.map.ImageManager;
 import net.quickwrite.cansteingottesdienst.rlgl.RedLightGreenLightGame;
 import net.quickwrite.cansteingottesdienst.rlgl.RedLightGreenLightSettings;
 import net.quickwrite.cansteingottesdienst.util.CropInfo;
 import net.quickwrite.cansteingottesdienst.util.storage.Flags;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.Server;
+import org.bukkit.NamespacedKey;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.MapMeta;
-import org.bukkit.map.MapView;
+import org.bukkit.inventory.Recipe;
+import org.bukkit.inventory.RecipeChoice;
+import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import javax.naming.Name;
 import java.util.ArrayList;
 
 public final class CansteinGottesdienst extends JavaPlugin {
@@ -92,6 +94,8 @@ public final class CansteinGottesdienst extends JavaPlugin {
         pluginManager.registerEvents(new EntityChangeListener(), this);
         pluginManager.registerEvents(new MapListener(), this);
         pluginManager.registerEvents(new WinepressJumpListener(), this);
+
+        initializeRecipes();
     }
 
     public void registerCommand(String name, CommandExecutor executor, TabCompleter tabCompleter){
@@ -157,6 +161,35 @@ public final class CansteinGottesdienst extends JavaPlugin {
 
         CropInfo.addCrop(Material.WHEAT, wheatDrop);
         CropInfo.addCrop(Material.CARROTS, carrotDrop);
+    }
+
+    private void initializeRecipes() {
+        System.out.println(Items.FLOUR.getItemStack());
+
+        Recipe breadRecipe = new ShapedRecipeBuilder(this, "bread", Items.BREAD.getItemStack())
+                .setShape("aaa", " b ")
+                .addShapedIngredient('a', new RecipeChoice.ExactChoice(Items.FLOUR.getItemStack()))
+                .addShapedIngredient('b', Material.POTION)
+                .build();
+        Recipe oxTonguePowder = new ShapelessRecipeBuilder(this, "ox_tongue_powder",
+                Items.OX_TONGUE_POWDER.getItemStack())
+                .addShapelessIngredient(new RecipeChoice.ExactChoice(Items.OX_TONGUE.getItemStack()))
+                .build();
+        Recipe cookLambGigot = new FurnaceRecipeBuilder(this, "cook_lamb_gigot",
+                Items.COOKED_LAMB_GIGOT.getItemStack())
+                .setInput(new RecipeChoice.ExactChoice(Items.LAMB_GIGOT.getItemStack()))
+                .setExperience(0)
+                .build();
+
+        Bukkit.removeRecipe(NamespacedKey.fromString("bread"));
+
+        addRecipe(breadRecipe);
+        addRecipe(oxTonguePowder);
+        addRecipe(cookLambGigot);
+    }
+
+    private boolean addRecipe(Recipe recipe) {
+        return Bukkit.addRecipe(recipe);
     }
 
     public DefaultConfig getDefaultConfig() {

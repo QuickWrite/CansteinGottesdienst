@@ -39,6 +39,6 @@ public class ShapedRecipeBuilder extends RecipeBuilder {
 
     @Override
     public Recipe build() {
-        return null;
+        return recipe;
     }
 }
