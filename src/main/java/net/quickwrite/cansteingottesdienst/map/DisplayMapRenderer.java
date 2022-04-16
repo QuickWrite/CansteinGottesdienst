@@ -25,11 +25,13 @@ public class DisplayMapRenderer extends MapRenderer {
         loadImages();
     }
 
-    private void loadImages() {
+    public void loadImages() {
+        images.clear();
         MapInformation gatherer = MapInformation.INSTANCE;
         for(String key : gatherer.getAmounts().keySet()){
-            images.put(key, ImageManager.INSTANCE.loadImage(key));
+            images.put(key, ImageManager.loadImage(key));
         }
+        System.out.println(images);
     }
 
     @Override

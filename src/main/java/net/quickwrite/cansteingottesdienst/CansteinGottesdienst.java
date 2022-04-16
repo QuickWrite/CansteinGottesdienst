@@ -77,7 +77,7 @@ public final class CansteinGottesdienst extends JavaPlugin {
         // register Commands
         registerCommand("rlgl", new RedLightGreenLightCommand(), new RedLightGreenLightTabCompleter());
         registerCommand("customblock", new CustomBlockCommand(), new CustomBlockCommandTabCompleter());
-        registerCommand("initMap", new DebugCommand(), null);
+        registerCommand("initMap", new InitMapCommand(), null);
         registerCommand("customItem", new CustomItemCommand(), new CustomItemCommandTabCompleter());
         registerCommand("pmsg", new PMsgCommand(), null);
         registerCommand("trackerMap", new TrackerMapCommand(), new TrackerMapCommandTabCompleter());
@@ -163,12 +163,20 @@ public final class CansteinGottesdienst extends JavaPlugin {
     }
 
     private void initializeRecipes() {
-        System.out.println(Items.FLOUR.getItemStack());
+        //System.out.println(Items.FLOUR.getItemStack());
 
-        Recipe breadRecipe = new ShapedRecipeBuilder(this, "bread", Items.BREAD.getItemStack())
+        /*Recipe breadRecipe = new ShapedRecipeBuilder(this, "bread", Items.BREAD.getItemStack())
                 .setShape("aaa", " b ")
                 .addShapedIngredient('a', new RecipeChoice.ExactChoice(Items.FLOUR.getItemStack()))
                 .addShapedIngredient('b', Material.POTION)
+                .build();
+
+         */
+        Recipe breadRecipe = new ShapelessRecipeBuilder(this, "bread", Items.BREAD.getItemStack())
+                .addShapelessIngredient(new RecipeChoice.ExactChoice(Items.FLOUR.getItemStack()))
+                .addShapelessIngredient(new RecipeChoice.ExactChoice(Items.FLOUR.getItemStack()))
+                .addShapelessIngredient(new RecipeChoice.ExactChoice(Items.FLOUR.getItemStack()))
+                .addShapelessIngredient(Material.POTION)
                 .build();
         Recipe oxTonguePowder = new ShapelessRecipeBuilder(this, "ox_tongue_powder",
                 Items.OX_TONGUE_POWDER.getItemStack())
