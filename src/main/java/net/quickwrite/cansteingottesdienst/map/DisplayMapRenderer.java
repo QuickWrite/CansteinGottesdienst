@@ -51,24 +51,8 @@ public class DisplayMapRenderer extends MapRenderer {
         for(Items item : informationGatherer.getToSearchAmounts().keySet()){
             BufferedImage image = images.get(item.name());
             drawItemProgress(canvas, item, y);
-
-            /*drawImage(image, 5, y, canvas);
-
-            int amount = informationGatherer.getAmounts().get(item.name());
-            int toSearch = informationGatherer.getToSearchAmounts().get(item);
-
-            String text = amount < toSearch ? "§16;" : "§4;";
-            text += amount + " / " + toSearch;
-
-            canvas.drawText(5 + image.getWidth() + 10, y + (image.getHeight() - MinecraftFont.Font.getHeight()) / 2, MinecraftFont.Font, text);
-
-
-             */
             y += image.getHeight() + 5;
-
         }
-
-
         updates.put(map, true);
     }
 
@@ -109,8 +93,6 @@ public class DisplayMapRenderer extends MapRenderer {
         String text = available + " / " + toSearch;
         canvas.drawText(x + 16 + 5 + (width - MinecraftFont.Font.getWidth(text)) / 2,
                 y - 1 + (16 - MinecraftFont.Font.getHeight()) / 2, MinecraftFont.Font, text);
-
-
     }
 
     public void drawImage(BufferedImage image, int px, int py, MapCanvas canvas){

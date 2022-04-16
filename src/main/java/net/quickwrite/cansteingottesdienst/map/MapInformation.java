@@ -3,12 +3,16 @@ package net.quickwrite.cansteingottesdienst.map;
 import net.quickwrite.cansteingottesdienst.CansteinGottesdienst;
 import net.quickwrite.cansteingottesdienst.items.Items;
 import org.bukkit.Location;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Item;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
 
 public class MapInformation {
 
@@ -25,6 +29,7 @@ public class MapInformation {
     private MapInformation() {
         amounts = new HashMap<>();
         toSearchAmounts = new HashMap<>();
+        x = y = z = 0;
 
         loadFromConfig();
     }
@@ -48,14 +53,24 @@ public class MapInformation {
 
     private void loadFromConfig(){
         FileConfiguration config = CansteinGottesdienst.getInstance().getMapInformationConfig().getConfig();
-        x = config.getInt("map.information.x",233);
-        y = config.getInt("map.information.y",88);
-        z = config.getInt("map.information.z",280);
-        toSearchAmounts.put(Items.BREAD, 20);
-        toSearchAmounts.put(Items.CELERY, 30);
+        if(!config.contains("map.information")){
+            toSearchAmounts.put(Items.BREAD, 10);
+            toSearchAmounts.put(Items.CELERY, 10);
+            save();
+            convert();
+            return;
+        }
+        x = config.getInt("map.information.x");
+        y = config.getInt("map.information.y");
+        z = config.getInt("map.information.z");
 
-
-        CansteinGottesdienst.getInstance().getMapInformationConfig().saveConfig();
+        ConfigurationSection section = config.getConfigurationSection("map.information.items");
+        if (section == null) return;
+        for(Map.Entry<String, Object> entry : section.getValues(false).entrySet()){
+            Items item = Items.valueOf(entry.getKey().toUpperCase(Locale.ROOT));
+            int amount = (int) entry.getValue();
+            toSearchAmounts.put(item, amount);
+        }
         convert();
     }
 
@@ -64,6 +79,25 @@ public class MapInformation {
         for(Items item : toSearchAmounts.keySet()){
             amounts.put(item.name(), 0);
         }
+    }
+
+    public void setup(Location loc){
+        x = loc.getBlockX();
+        y = loc.getBlockY();
+        z = loc.getBlockZ();
+
+        save();
+    }
+
+    public void save(){
+        FileConfiguration config = CansteinGottesdienst.getInstance().getMapInformationConfig().getConfig();
+        config.set("map.information.x", x);
+        config.set("map.information.y", y);
+        config.set("map.information.z", z);
+        for(Items i : toSearchAmounts.keySet()){
+            config.set("map.information.items." + i.name(), toSearchAmounts.get(i));
+        }
+        CansteinGottesdienst.getInstance().getMapInformationConfig().saveConfig();
     }
 
     public boolean addItem(ItemStack item, int amount){

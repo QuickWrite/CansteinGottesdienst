@@ -81,6 +81,7 @@ public final class CansteinGottesdienst extends JavaPlugin {
         registerCommand("customItem", new CustomItemCommand(), new CustomItemCommandTabCompleter());
         registerCommand("pmsg", new PMsgCommand(), null);
         registerCommand("trackerMap", new TrackerMapCommand(), new TrackerMapCommandTabCompleter());
+        registerCommand("setupmap", new MapInformationCommand(), null);
 
         // register EventListener
         PluginManager pluginManager = getServer().getPluginManager();
