@@ -3,17 +3,17 @@ package net.quickwrite.cansteingottesdienst;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import net.quickwrite.cansteingottesdienst.blocks.*;
 import net.quickwrite.cansteingottesdienst.builder.items.ItemBuilder;
-import net.quickwrite.cansteingottesdienst.commands.CustomBlockCommand;
-import net.quickwrite.cansteingottesdienst.commands.CustomItemCommand;
-import net.quickwrite.cansteingottesdienst.commands.DebugCommand;
-import net.quickwrite.cansteingottesdienst.commands.PMsgCommand;
+import net.quickwrite.cansteingottesdienst.commands.*;
 import net.quickwrite.cansteingottesdienst.commands.rlgl.RedLightGreenLightCommand;
 import net.quickwrite.cansteingottesdienst.commands.tabcomplete.CustomBlockCommandTabCompleter;
 import net.quickwrite.cansteingottesdienst.commands.tabcomplete.CustomItemCommandTabCompleter;
 import net.quickwrite.cansteingottesdienst.commands.tabcomplete.RedLightGreenLightTabCompleter;
+import net.quickwrite.cansteingottesdienst.commands.tabcomplete.TrackerMapCommandTabCompleter;
 import net.quickwrite.cansteingottesdienst.config.MapInformationConfig;
+import net.quickwrite.cansteingottesdienst.items.Items;
 import net.quickwrite.cansteingottesdienst.listener.*;
 import net.quickwrite.cansteingottesdienst.listener.block.BlockInteractListener;
+import net.quickwrite.cansteingottesdienst.map.DisplayMapRenderer;
 import net.quickwrite.cansteingottesdienst.map.ImageManager;
 import net.quickwrite.cansteingottesdienst.rlgl.RedLightGreenLightGame;
 import net.quickwrite.cansteingottesdienst.rlgl.RedLightGreenLightSettings;
@@ -21,12 +21,16 @@ import net.quickwrite.cansteingottesdienst.util.CropInfo;
 import net.quickwrite.cansteingottesdienst.util.storage.Flags;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.Server;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.MapMeta;
+import org.bukkit.map.MapView;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -71,6 +75,7 @@ public final class CansteinGottesdienst extends JavaPlugin {
         registerCommand("cdebug", new DebugCommand(), null);
         registerCommand("customItem", new CustomItemCommand(), new CustomItemCommandTabCompleter());
         registerCommand("pmsg", new PMsgCommand(), null);
+        registerCommand("trackerMap", new TrackerMapCommand(), new TrackerMapCommandTabCompleter());
 
         // register EventListener
         PluginManager pluginManager = getServer().getPluginManager();

@@ -22,3 +22,6 @@ commands:
   pmsg:
     description: "Sends messages as another entity"
     usage: "/pmsg <name> <message>"
+  trackermap:
+    description: "Gives you (or another player) a TrackerMap."
+    usage: "/trackermap get <Player|all>"
