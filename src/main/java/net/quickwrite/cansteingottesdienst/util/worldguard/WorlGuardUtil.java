@@ -1,4 +1,4 @@
-package net.quickwrite.cansteingottesdienst.util;
+package net.quickwrite.cansteingottesdienst.util.worldguard;
 
 import com.sk89q.worldedit.bukkit.BukkitWorld;
 import com.sk89q.worldedit.util.Location;

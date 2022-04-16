@@ -1,21 +1,17 @@
 package net.quickwrite.cansteingottesdienst.listener;
 
 import net.quickwrite.cansteingottesdienst.CansteinGottesdienst;
-import net.quickwrite.cansteingottesdienst.blocks.CustomBlock;
-import net.quickwrite.cansteingottesdienst.builder.items.ItemBuilder;
 import net.quickwrite.cansteingottesdienst.items.Items;
 import net.quickwrite.cansteingottesdienst.util.Random;
 import net.quickwrite.cansteingottesdienst.util.storage.Flags;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Sheep;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
 
-import net.quickwrite.cansteingottesdienst.util.WorlGuardUtil;
+import net.quickwrite.cansteingottesdienst.util.worldguard.WorlGuardUtil;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;

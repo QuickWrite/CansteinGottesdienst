@@ -2,11 +2,9 @@ package net.quickwrite.cansteingottesdienst.listener;
 
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
-import net.quickwrite.cansteingottesdienst.util.WorlGuardUtil;
+import net.quickwrite.cansteingottesdienst.util.worldguard.WorlGuardUtil;
 import net.quickwrite.cansteingottesdienst.util.storage.Flags;
 import net.quickwrite.cansteingottesdienst.util.storage.WinepressList;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

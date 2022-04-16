@@ -21,6 +21,7 @@ import net.quickwrite.cansteingottesdienst.rlgl.RedLightGreenLightGame;
 import net.quickwrite.cansteingottesdienst.rlgl.RedLightGreenLightSettings;
 import net.quickwrite.cansteingottesdienst.util.CropInfo;
 import net.quickwrite.cansteingottesdienst.util.storage.Flags;
+import net.quickwrite.cansteingottesdienst.util.storage.WinepressList;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -108,6 +109,8 @@ public final class CansteinGottesdienst extends JavaPlugin {
     public void onDisable() {
         // Plugin shutdown logic
         CropInfo.flush();
+
+        WinepressList.delete();
     }
 
     public void initializeWorldGuard() {

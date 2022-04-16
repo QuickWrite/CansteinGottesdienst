@@ -3,12 +3,12 @@ package net.quickwrite.cansteingottesdienst.util.storage;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import net.quickwrite.cansteingottesdienst.CansteinGottesdienst;
 import net.quickwrite.cansteingottesdienst.items.Items;
-import net.quickwrite.cansteingottesdienst.util.WorlGuardUtil;
+import net.quickwrite.cansteingottesdienst.util.worldguard.WorlGuardUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.inventory.ItemStack;
+import org.bukkit.entity.ArmorStand;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,10 +27,22 @@ public class WinepressList {
         return info;
     }
 
+    public static void delete() {
+        for (WinepressInfo info : WINEPRESSES.values()) {
+            info.delete();
+        }
+
+        WINEPRESSES.clear();
+    }
+
     public static class WinepressInfo {
-        private final int max;
+        private int max;
         private int current;
+        private int neededJumps = 0;
+
         private boolean traversed = false;
+
+        private final ArmorStand armorStand;
 
         private int jumps = 0;
 
@@ -39,31 +51,50 @@ public class WinepressList {
 
         public WinepressInfo(final ProtectedRegion region, final int max, final World world) {
             this.region = region;
-            this.max = max;
+            this.max = max - 1;
 
             this.world = world;
 
+            this.armorStand = world.spawn(WorlGuardUtil.getCenter(region, world).add(0.5, 1.5, 0.5),
+                    ArmorStand.class, entity -> {
+                        entity.setCustomNameVisible(true);
+                        entity.setVisible(false);
+                        entity.setMarker(true);
+
+                        entity.setCustomName(hologramAdd());
+                    });
+
             this.current = 0;
+        }
+
+        public void setMax(int max) {
+            this.max = max - 1;
         }
 
         public void bump(int count) {
             this.current += count;
 
+            this.armorStand.setCustomName(hologramAdd());
+
             if (!(this.current > this.max)) {
                 return;
             }
 
+            this.neededJumps = ((this.current - (this.current % 5)) * 2);
+
             if (!this.traversed) {
                 traverseAllBlocks(Material.PURPLE_CARPET);
                 this.traversed = true;
+
+                this.armorStand.setCustomName(hologramJump());
             }
         }
 
         public void bumpJumps() {
-            jumps++;
+            this.jumps++;
 
-            if (jumps > current * 2) {
-                final int currentSave = current;
+            if (this.jumps >= this.neededJumps) {
+                int currentSave = this.current / 5;
 
                 Bukkit.getScheduler().runTaskLater(CansteinGottesdienst.getInstance(), () -> {
                     Location location = WorlGuardUtil.getCenter(region, world);
@@ -73,40 +104,60 @@ public class WinepressList {
                     }
                 }, 1);
 
+                this.jumps = 0;
+
                 reset();
 
-                jumps = 0;
+                return;
             }
+
+            this.armorStand.setCustomName(hologramJump());
         }
 
-        public int reset() {
-            int c = current;
-            current = 0;
-
+        public void reset() {
             this.traversed = false;
+            current = current % 5;
 
             traverseAllBlocks(Material.AIR);
 
-            return c;
+            this.armorStand.setCustomName(hologramAdd());
         }
 
         private void traverseAllBlocks(Material material) {
             Bukkit.getScheduler().runTaskLater(CansteinGottesdienst.getInstance(), () -> {
-                for (int x = region.getMinimumPoint().getX(); x <= region.getMaximumPoint().getX(); x++) {
-                    for (int y = region.getMinimumPoint().getY(); y <= region.getMaximumPoint().getY(); y++) {
-                        for (int z = region.getMinimumPoint().getZ(); z <= region.getMaximumPoint().getZ(); z++) {
-                            if (!region.contains(x, y, z)) {
-                                continue;
-                            }
+                traverseAllBlocksHard(material);
+            }, 1);
+        }
 
-                            if(!world.getBlockAt(x, y - 2, z).getType().equals(Material.GREEN_GLAZED_TERRACOTTA)) {
-                                continue;
-                            }
-                            world.getBlockAt(x, y, z).setType(material);
+        private void traverseAllBlocksHard(Material material) {
+            for (int x = region.getMinimumPoint().getX(); x <= region.getMaximumPoint().getX(); x++) {
+                for (int y = region.getMinimumPoint().getY(); y <= region.getMaximumPoint().getY(); y++) {
+                    for (int z = region.getMinimumPoint().getZ(); z <= region.getMaximumPoint().getZ(); z++) {
+                        if (!region.contains(x, y, z)) {
+                            continue;
                         }
+
+                        if(!world.getBlockAt(x, y - 2, z).getType().equals(Material.GREEN_GLAZED_TERRACOTTA)) {
+                            continue;
+                        }
+                        world.getBlockAt(x, y, z).setType(material);
                     }
                 }
-            }, 1);
+            }
+        }
+
+        private String hologramAdd() {
+            return this.current + " / " + (max + 1) + " Trauben";
+        }
+
+        private String hologramJump() {
+            return this.jumps + " / " + this.neededJumps + " Sprünge";
+        }
+
+        public void delete() {
+            this.armorStand.remove();
+
+            traverseAllBlocksHard(Material.AIR);
         }
     }
 }

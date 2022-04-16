@@ -4,9 +4,8 @@ import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import net.quickwrite.cansteingottesdienst.CansteinGottesdienst;
 import net.quickwrite.cansteingottesdienst.blocks.CustomBlock;
-import net.quickwrite.cansteingottesdienst.builder.items.ItemBuilder;
 import net.quickwrite.cansteingottesdienst.items.Items;
-import net.quickwrite.cansteingottesdienst.util.WorlGuardUtil;
+import net.quickwrite.cansteingottesdienst.util.worldguard.WorlGuardUtil;
 import net.quickwrite.cansteingottesdienst.util.storage.Flags;
 import net.quickwrite.cansteingottesdienst.util.storage.WinepressList;
 import org.bukkit.Bukkit;
@@ -19,7 +18,6 @@ import org.bukkit.entity.Item;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerDropItemEvent;
-import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -28,7 +26,6 @@ import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Objects;
 
 public class ConveyorListener implements Listener {
 
@@ -135,10 +132,14 @@ public class ConveyorListener implements Listener {
                 drop = itemStack;
             } else {
                 for (ProtectedRegion region : regionSet.getRegions()) {
-                    if (region.getFlag(Flags.WINE_PRESS) == null)
+                    Integer flag = region.getFlag(Flags.WINE_PRESS);
+
+                    if (flag == null)
                         continue;
 
-                    WinepressList.getInfo(region, location.getWorld()).bump(itemStack.getAmount());
+                    WinepressList.WinepressInfo info = WinepressList.getInfo(region, location.getWorld());
+                    info.setMax(flag);
+                    info.bump(itemStack.getAmount());
                 }
                 return;
             }

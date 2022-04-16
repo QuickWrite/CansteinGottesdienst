@@ -5,7 +5,7 @@ import net.quickwrite.cansteingottesdienst.CansteinGottesdienst;
 import net.quickwrite.cansteingottesdienst.blocks.CustomBlock;
 import net.quickwrite.cansteingottesdienst.blocks.EmtpyGrapesBlock;
 import net.quickwrite.cansteingottesdienst.blocks.IHarvestable;
-import net.quickwrite.cansteingottesdienst.util.WorlGuardUtil;
+import net.quickwrite.cansteingottesdienst.util.worldguard.WorlGuardUtil;
 import net.quickwrite.cansteingottesdienst.util.storage.Flags;
 import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;
