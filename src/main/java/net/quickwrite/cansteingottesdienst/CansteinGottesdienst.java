@@ -9,6 +9,7 @@ import net.quickwrite.cansteingottesdienst.commands.tabcomplete.CustomBlockComma
 import net.quickwrite.cansteingottesdienst.commands.tabcomplete.CustomItemCommandTabCompleter;
 import net.quickwrite.cansteingottesdienst.commands.tabcomplete.RedLightGreenLightTabCompleter;
 import net.quickwrite.cansteingottesdienst.commands.tabcomplete.TrackerMapCommandTabCompleter;
+import net.quickwrite.cansteingottesdienst.config.DefaultConfig;
 import net.quickwrite.cansteingottesdienst.config.MapInformationConfig;
 import net.quickwrite.cansteingottesdienst.items.Items;
 import net.quickwrite.cansteingottesdienst.listener.*;
@@ -42,11 +43,12 @@ public final class CansteinGottesdienst extends JavaPlugin {
     public static Blocks BLOCKS;
 
     public static WorldGuardPlugin WORLDGUARD_PLUGIN;
-    public static String PREFIX = "[Gottesdienst] ";
+    public static String PREFIX;
     public static final String PATH = "canstein";
 
     private RedLightGreenLightGame raceGame;
     private MapInformationConfig mapInformationConfig;
+    private DefaultConfig config;
 
     @Override
     public void onLoad() {
@@ -58,7 +60,10 @@ public final class CansteinGottesdienst extends JavaPlugin {
         instance = this;
         ConfigurationSerialization.registerClass(RedLightGreenLightSettings.class);
 
+        config = new DefaultConfig();
         mapInformationConfig = new MapInformationConfig();
+
+        PREFIX = config.getConfig().getString("prefix", "[Gottesdienst] ");
 
         // registration of custom Blocks
         BLOCKS = new Blocks();
@@ -149,6 +154,10 @@ public final class CansteinGottesdienst extends JavaPlugin {
 
         CropInfo.addCrop(Material.WHEAT, wheatDrop);
         CropInfo.addCrop(Material.CARROTS, carrotDrop);
+    }
+
+    public DefaultConfig getDefaultConfig() {
+        return config;
     }
 
     public MapInformationConfig getMapInformationConfig() {

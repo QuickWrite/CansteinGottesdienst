@@ -1,10 +1,12 @@
 package net.quickwrite.cansteingottesdienst.commands;
 
 import net.quickwrite.cansteingottesdienst.CansteinGottesdienst;
+import net.quickwrite.cansteingottesdienst.util.Placeholder;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
@@ -12,6 +14,12 @@ import java.util.Map;
 
 public class PMsgCommand implements CommandExecutor {
     private final Map<Player, String> playerMap = new HashMap<>();
+    private final String messageTemplate;
+
+    public PMsgCommand() {
+        FileConfiguration config = CansteinGottesdienst.getInstance().getDefaultConfig().getConfig();
+        this.messageTemplate = config.getString("pmsg.messageTemplate", "[%player%§r]: ");
+    }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -47,8 +55,8 @@ public class PMsgCommand implements CommandExecutor {
         }
 
         for (Player serverPlayer : sender.getServer().getOnlinePlayers()) {
-            serverPlayer.sendMessage("[" + playerMap.get(player) + "§r]: " +
-                    format(String.join(" ", args)));
+            serverPlayer.sendMessage(Placeholder.replace(messageTemplate, "player", playerMap.get(player))
+                    + format(String.join(" ", args)));
         }
 
         return true;
