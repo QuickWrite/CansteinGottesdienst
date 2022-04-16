@@ -122,4 +122,9 @@ public class MapInformation {
     public HashMap<String, Integer> getAmounts() {
         return amounts;
     }
+
+    public void reset() {
+        convert();
+        DisplayMapRenderer.INSTANCE.update();
+    }
 }

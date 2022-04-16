@@ -3,6 +3,7 @@ package net.quickwrite.cansteingottesdienst.commands;
 import net.quickwrite.cansteingottesdienst.CansteinGottesdienst;
 import net.quickwrite.cansteingottesdienst.builder.items.ItemBuilder;
 import net.quickwrite.cansteingottesdienst.map.DisplayMapRenderer;
+import net.quickwrite.cansteingottesdienst.map.MapInformation;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -53,6 +54,10 @@ public class TrackerMapCommand implements CommandExecutor {
         map.setItemMeta(meta);
 
         if (args.length < 2) {
+            if (args[1].equalsIgnoreCase("reset")){
+                MapInformation.INSTANCE.reset();
+                return true;
+            }
             this.setMapItem(player, map);
             return true;
         }
