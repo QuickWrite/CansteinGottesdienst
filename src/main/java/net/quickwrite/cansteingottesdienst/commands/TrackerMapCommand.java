@@ -54,6 +54,7 @@ public class TrackerMapCommand implements CommandExecutor {
 
         if (args.length < 2) {
             this.setMapItem(player, map);
+            return true;
         }
 
         if (args[1].equals("all")) {
