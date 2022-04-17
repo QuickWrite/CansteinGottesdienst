@@ -1,6 +1,7 @@
 package net.quickwrite.cansteingottesdienst.rlgl;
 
 import net.quickwrite.cansteingottesdienst.CansteinGottesdienst;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -44,8 +45,7 @@ public class RedLightGreenLightGame {
         return settings != null;
     }
 
-    public void start(){
-        System.out.println("Start");
+    public void start() {
         startRound();
         for(Player p : playingPlayers){
             startingLocations.put(p, p.getLocation());
@@ -70,6 +70,10 @@ public class RedLightGreenLightGame {
                     //Finish Players have to stop
                     cancel();
                     startHaltListener();
+
+                    Bukkit.getOnlinePlayers().stream()
+                            .filter(player -> player.hasPermission("canstein.rlgl.bypass"))
+                            .forEach(player -> player.sendMessage("Das Spiel hat gestoppt!"));
                 }
                 if(delay[0] == 20) {
                     for(Player p : playingPlayers){
@@ -99,6 +103,7 @@ public class RedLightGreenLightGame {
 
     private boolean hasFinished(Player p){
         Location l = p.getLocation();
+        p.sendMessage("Du hast es geschafft!");
         return l.getBlockX() * settings.getDirection().getxMod() > settings.getX() || l.getBlockZ() * settings.getDirection().getzMod() > settings.getZ();
     }
 
