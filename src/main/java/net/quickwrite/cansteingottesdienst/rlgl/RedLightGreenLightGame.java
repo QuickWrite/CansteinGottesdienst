@@ -70,10 +70,6 @@ public class RedLightGreenLightGame {
                     //Finish Players have to stop
                     cancel();
                     startHaltListener();
-
-                    Bukkit.getOnlinePlayers().stream()
-                            .filter(player -> player.hasPermission("canstein.rlgl.bypass"))
-                            .forEach(player -> player.sendMessage("Das Spiel hat gestoppt!"));
                 }
                 if(delay[0] == 20) {
                     for(Player p : playingPlayers){
@@ -93,6 +89,7 @@ public class RedLightGreenLightGame {
                         p.stopSound(settings.getSound());
                         if(playingPlayers.size() == 0){
                             CansteinGottesdienst.getInstance().stopGame();
+                            for(Player p : onlySound) p.sendMessage("Das Spiel wurde gestoppt");
                         }
                         break;
                     }
