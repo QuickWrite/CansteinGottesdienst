@@ -84,7 +84,6 @@ public class RedLightGreenLightGame {
                 for(int i = playingPlayers.size() - 1; i >= 0; i--){
                     Player p = playingPlayers.get(i);
                     if(hasFinished(p)){
-                        p.sendMessage("Du hast es geschafft!");
                         playingPlayers.remove(p);
                         p.stopSound(settings.getSound());
 
@@ -97,7 +96,6 @@ public class RedLightGreenLightGame {
                                     });
 
                             CansteinGottesdienst.getInstance().stopGame();
-                            for(Player pll : onlySound) pll.sendMessage("Das Spiel wurde gestoppt");
                         }
 
                         p.sendMessage(CansteinGottesdienst.PREFIX + "Du hast es geschafft!");
