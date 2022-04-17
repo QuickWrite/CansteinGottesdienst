@@ -89,7 +89,7 @@ public class RedLightGreenLightGame {
                         p.stopSound(settings.getSound());
                         if(playingPlayers.size() == 0){
                             CansteinGottesdienst.getInstance().stopGame();
-                            for(Player p : onlySound) p.sendMessage("Das Spiel wurde gestoppt");
+                            for(Player pll : onlySound) pll.sendMessage("Das Spiel wurde gestoppt");
                         }
                         break;
                     }
