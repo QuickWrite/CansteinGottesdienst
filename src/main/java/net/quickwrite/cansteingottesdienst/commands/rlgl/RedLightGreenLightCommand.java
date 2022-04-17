@@ -28,27 +28,27 @@ public class RedLightGreenLightCommand implements CommandExecutor {
         RedLightGreenLightGame game = CansteinGottesdienst.getInstance().getRaceGame();
         if(args[0].equalsIgnoreCase("start")){
             if(game != null){
-                p.sendMessage(CansteinGottesdienst.PREFIX + "§cThere is a game running");
+                p.sendMessage(CansteinGottesdienst.PREFIX + "§cEs ist schon ein Spiel gestartet");
             }else {
                 if(CansteinGottesdienst.getInstance().initGame(p)){
-                    p.sendMessage(CansteinGottesdienst.PREFIX + "§aThe game has been started");
+                    p.sendMessage(CansteinGottesdienst.PREFIX + "§aDas Spiel wurde gestartet");
                 }else{
-                    p.sendMessage(CansteinGottesdienst.PREFIX + "§cThe game can not be started as it is not set up");
+                    p.sendMessage(CansteinGottesdienst.PREFIX + "§cDas Spiel kann nicht gestartet werden, da ein setup fehlt");
                 }
             }
         }else if (args[0].equalsIgnoreCase("stop")){
             if(game == null){
-                p.sendMessage(CansteinGottesdienst.PREFIX + "§cThere is no game to stop");
+                p.sendMessage(CansteinGottesdienst.PREFIX + "§cEs ist kein Spiel am laufen");
             } else {
                 CansteinGottesdienst.getInstance().stopGame();
-                p.sendMessage(CansteinGottesdienst.PREFIX + "§aThe game has been stopped");
+                p.sendMessage(CansteinGottesdienst.PREFIX + "§aDas Spiel wurde gestoppt");
             }
         }else if (args[0].equalsIgnoreCase("setup")){
             if(game != null){
-                p.sendMessage(CansteinGottesdienst.PREFIX + "§cCan't perform game setup as there is a game running");
+                p.sendMessage(CansteinGottesdienst.PREFIX + "§cDas Setup kann nicht durchgeführ werden da das spiel gerade läuft");
             } else {
                 RedLightGreenLightGame.setSettings(p);
-                p.sendMessage(CansteinGottesdienst.PREFIX + "§aThe game has been set up. Use §6/" + command.getName() + " start §ato start it");
+                p.sendMessage(CansteinGottesdienst.PREFIX + "§aDer Setup wurde ausgeführt. Benutze §6/" + command.getName() + " start §aum das spiel zu starten");
             }
         }else if (args[0].equalsIgnoreCase("help")){
             sendHelp(p);
