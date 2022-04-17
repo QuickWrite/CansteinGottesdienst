@@ -70,10 +70,6 @@ public class RedLightGreenLightGame {
                     //Finish Players have to stop
                     cancel();
                     startHaltListener();
-
-                    Bukkit.getOnlinePlayers().stream()
-                            .filter(player -> player.hasPermission("canstein.rlgl.bypass"))
-                            .forEach(player -> player.sendMessage("Das Spiel hat gestoppt!"));
                 }
                 if(delay[0] == 20) {
                     for(Player p : playingPlayers){
@@ -90,9 +86,19 @@ public class RedLightGreenLightGame {
                     if(hasFinished(p)){
                         playingPlayers.remove(p);
                         p.stopSound(settings.getSound());
+
                         if(playingPlayers.size() == 0){
+                            Bukkit.getOnlinePlayers().stream()
+                                    .filter(player -> player.hasPermission("canstein.rlgl.bypass"))
+                                    .forEach(player -> {
+                                        player.sendMessage(CansteinGottesdienst.PREFIX + "Das Spiel hat gestoppt!");
+                                        player.stopSound(settings.getSound());
+                                    });
+
                             CansteinGottesdienst.getInstance().stopGame();
                         }
+
+                        p.sendMessage(CansteinGottesdienst.PREFIX + "Du hast es geschafft!");
                         break;
                     }
                 }
@@ -103,7 +109,6 @@ public class RedLightGreenLightGame {
 
     private boolean hasFinished(Player p){
         Location l = p.getLocation();
-        p.sendMessage("Du hast es geschafft!");
         return l.getBlockX() * settings.getDirection().getxMod() > settings.getX() || l.getBlockZ() * settings.getDirection().getzMod() > settings.getZ();
     }
 
