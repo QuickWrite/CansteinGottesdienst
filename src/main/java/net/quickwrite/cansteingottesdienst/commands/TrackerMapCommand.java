@@ -35,8 +35,22 @@ public class TrackerMapCommand implements CommandExecutor {
 
         Player player = (Player) sender;
 
-        if (args.length < 1 || !args[0].equals("get")) {
-            sender.sendMessage(CansteinGottesdienst.PREFIX + "§cPlease use §6/" + command.getName() + " get <player|all>");
+        if (args.length < 1) {
+            sender.sendMessage(CansteinGottesdienst.PREFIX + "§cPlease use §6/" + command.getName() + " <get|reset|reload> <player|all>");
+            return true;
+        }
+
+        if (args[0].equalsIgnoreCase("reset")){
+            MapInformation.INSTANCE.reset();
+            sender.sendMessage(CansteinGottesdienst.PREFIX + "§aResetted Map");
+            return true;
+        }else if (args[0].equalsIgnoreCase("reload")){
+            MapInformation.INSTANCE.loadFromConfig();
+            sender.sendMessage(CansteinGottesdienst.PREFIX + "§aReloaded Map");
+            return true;
+        }
+
+        if(!args[0].equalsIgnoreCase("get")) {
             return true;
         }
 
@@ -54,15 +68,6 @@ public class TrackerMapCommand implements CommandExecutor {
         map.setItemMeta(meta);
 
         if (args.length < 2) {
-            if (args[1].equalsIgnoreCase("reset")){
-                MapInformation.INSTANCE.reset();
-                sender.sendMessage(CansteinGottesdienst.PREFIX + "§aResetted Map");
-                return true;
-            }else if (args[1].equalsIgnoreCase("reload")){
-                MapInformation.INSTANCE.loadFromConfig();
-                sender.sendMessage(CansteinGottesdienst.PREFIX + "§aReloaded Map");
-                return true;
-            }
             this.setMapItem(player, map);
             return true;
         }
