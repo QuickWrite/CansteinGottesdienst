@@ -4,7 +4,6 @@ import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import net.quickwrite.cansteingottesdienst.blocks.*;
 import net.quickwrite.cansteingottesdienst.builder.items.ItemBuilder;
 import net.quickwrite.cansteingottesdienst.builder.recipes.FurnaceRecipeBuilder;
-import net.quickwrite.cansteingottesdienst.builder.recipes.ShapedRecipeBuilder;
 import net.quickwrite.cansteingottesdienst.builder.recipes.ShapelessRecipeBuilder;
 import net.quickwrite.cansteingottesdienst.commands.*;
 import net.quickwrite.cansteingottesdienst.commands.rlgl.RedLightGreenLightCommand;
@@ -73,6 +72,8 @@ public final class CansteinGottesdienst extends JavaPlugin {
         BLOCKS.register(new EmtpyGrapesBlock());
         BLOCKS.register(new OxTongueBlock());
 
+        reloadConfig();
+
         initializeCrops();
 
         // register Commands
@@ -80,7 +81,8 @@ public final class CansteinGottesdienst extends JavaPlugin {
         registerCommand("customblock", new CustomBlockCommand(), new CustomBlockCommandTabCompleter());
         registerCommand("initMap", new InitMapCommand(), null);
         registerCommand("customItem", new CustomItemCommand(), new CustomItemCommandTabCompleter());
-        registerCommand("pmsg", new PMsgCommand(), null);
+        registerCommand("pmsg", new CustomPrivateMessageCommand(), null);
+        registerCommand("pmsall", new CustomMessageAllCommand(), null);
         registerCommand("trackerMap", new TrackerMapCommand(), new TrackerMapCommandTabCompleter());
         registerCommand("setupmap", new MapInformationCommand(), null);
 

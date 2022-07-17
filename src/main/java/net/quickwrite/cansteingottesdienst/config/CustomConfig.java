@@ -1,18 +1,23 @@
 package net.quickwrite.cansteingottesdienst.config;
 
+import com.google.common.base.Charsets;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 public class CustomConfig {
 
     private File configFile;
     private FileConfiguration config;
+    private JavaPlugin plugin;
 
     public CustomConfig(JavaPlugin plugin, String name){
+        this.plugin = plugin;
         createCustomConfig(plugin, name);
     }
 
@@ -24,6 +29,17 @@ public class CustomConfig {
         }
 
         config = YamlConfiguration.loadConfiguration(configFile);
+    }
+
+    public void reloadConfig(){
+        config = YamlConfiguration.loadConfiguration(configFile);
+
+        final InputStream defConfigStream = plugin.getResource("config.yml");
+        if (defConfigStream == null) {
+            return;
+        }
+
+        config.setDefaults(YamlConfiguration.loadConfiguration(new InputStreamReader(defConfigStream, Charsets.UTF_8)));
     }
 
     public void saveConfig(){

@@ -12,6 +12,7 @@ prefix: "[Gottesdienst] "
 
 pmsg:
   messageTemplate: "[%player%§r]: "
+  messageTemplatePrivateMessage: "[%player%§r] -> "
 
 winepress:
   grapes_hologram: "%current% / %max% Trauben"

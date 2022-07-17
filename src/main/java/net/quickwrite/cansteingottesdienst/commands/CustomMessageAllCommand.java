@@ -12,11 +12,11 @@ import org.bukkit.entity.Player;
 import java.util.HashMap;
 import java.util.Map;
 
-public class PMsgCommand implements CommandExecutor {
-    private final Map<Player, String> playerMap = new HashMap<>();
+public class CustomMessageAllCommand implements CommandExecutor {
+    public static final Map<Player, String> playerMap = new HashMap<>();
     private final String messageTemplate;
 
-    public PMsgCommand() {
+    public CustomMessageAllCommand() {
         FileConfiguration config = CansteinGottesdienst.getInstance().getDefaultConfig().getConfig();
         this.messageTemplate = config.getString("pmsg.messageTemplate", "[%player%§r]: ");
     }
