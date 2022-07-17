@@ -31,6 +31,6 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v3
         with:
-          name: Package
+          name: ${{ github.event.repository.name }}-${{ github.sha }}
           path: staging
           
