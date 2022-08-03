@@ -31,15 +31,12 @@ public class CustomPrivateMessageToPlayerCommand implements CommandExecutor {
             return true;
 
         if (args.length == 0) {
-            String remove = null;
+            sender.sendMessage("You have to specify a player");
+            return true;
+        }
 
-            if((remove = CustomMessageGlobalCommand.playerMap.remove((Player)sender)) != null) {
-                sender.sendMessage(CansteinGottesdienst.PREFIX + "§aSuccessfully removed " + remove + "§r!");
-                return true;
-            }
-
-            sender.sendMessage(CansteinGottesdienst.PREFIX + "§cYou are not in the list.");
-
+        if(args.length == 1){
+            sender.sendMessage(CansteinGottesdienst.PREFIX + "§cNo Message specified. Use §6/pmsg <player> <Message>");
             return true;
         }
 
@@ -47,11 +44,6 @@ public class CustomPrivateMessageToPlayerCommand implements CommandExecutor {
 
         if(CustomMessageGlobalCommand.playerMap.get(player) == null){
             sender.sendMessage(CansteinGottesdienst.PREFIX + "§cNo custom name defined. Please define one using §6/pmsglobal <name>");
-            return true;
-        }
-
-        if(args.length < 2){
-            sender.sendMessage(CansteinGottesdienst.PREFIX + "§cNo Message specified. Use §6/pmsg <player> <Message>");
             return true;
         }
 

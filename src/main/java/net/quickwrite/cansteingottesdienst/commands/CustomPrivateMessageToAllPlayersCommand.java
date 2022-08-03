@@ -33,19 +33,16 @@ public class CustomPrivateMessageToAllPlayersCommand implements CommandExecutor 
             return true;
 
         if (args.length == 0) {
-            String remove = null;
-
-            if((remove = CustomMessageGlobalCommand.playerMap.remove((Player)sender)) != null) {
-                sender.sendMessage(CansteinGottesdienst.PREFIX + "§aSuccessfully removed " + remove + "§r!");
-                return true;
-            }
-
-            sender.sendMessage(CansteinGottesdienst.PREFIX + "§cYou are not in the list.");
-
+            sender.sendMessage(CansteinGottesdienst.PREFIX + "§cYou have to send a message!");
             return true;
         }
 
         Player player = (Player) sender;
+
+        if(CustomMessageGlobalCommand.playerMap.get(player) == null){
+            sender.sendMessage(CansteinGottesdienst.PREFIX + "§cNo custom name defined. Please define one using §6/pmsglobal <name>");
+            return true;
+        }
 
         for (Player serverPlayer : sender.getServer().getOnlinePlayers()) {
             serverPlayer.sendMessage(Placeholder.replace(messageTemplate, "player", CustomMessageGlobalCommand.playerMap.get(player))
