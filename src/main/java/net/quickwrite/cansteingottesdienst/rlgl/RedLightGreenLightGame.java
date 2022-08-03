@@ -22,7 +22,7 @@ public class RedLightGreenLightGame {
     private final Random random;
     private final HashMap<Player, Location> startingLocations;
     private final RedLightGreenLightSettings settings;
-    public static final String SETTINGS_PATH = CansteinGottesdienst.PATH + ".rlgl.settings";
+    public static final String SETTINGS_PATH = "rlgl";
 
     public RedLightGreenLightGame(World world){
         playingPlayers = new ArrayList<>();
