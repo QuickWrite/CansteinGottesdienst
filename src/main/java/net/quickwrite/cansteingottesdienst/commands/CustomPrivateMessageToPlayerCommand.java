@@ -11,13 +11,11 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 
-public class CustomPrivateMessageCommand implements CommandExecutor {
+public class CustomPrivateMessageToPlayerCommand implements CommandExecutor {
     private final String messageTemplate;
 
-    public CustomPrivateMessageCommand() {
+    public CustomPrivateMessageToPlayerCommand() {
         FileConfiguration config = CansteinGottesdienst.getInstance().getDefaultConfig().getConfig();
         this.messageTemplate = config.getString("pmsg.messageTemplatePrivateMessage", "[%player%§r] -> ");
     }
@@ -35,7 +33,7 @@ public class CustomPrivateMessageCommand implements CommandExecutor {
         if (args.length == 0) {
             String remove = null;
 
-            if((remove = CustomMessageAllCommand.playerMap.remove((Player)sender)) != null) {
+            if((remove = CustomMessageGlobalCommand.playerMap.remove((Player)sender)) != null) {
                 sender.sendMessage(CansteinGottesdienst.PREFIX + "§aSuccessfully removed " + remove + "§r!");
                 return true;
             }
@@ -47,8 +45,8 @@ public class CustomPrivateMessageCommand implements CommandExecutor {
 
         Player player = (Player) sender;
 
-        if(CustomMessageAllCommand.playerMap.get(player) == null){
-            sender.sendMessage(CansteinGottesdienst.PREFIX + "§cNo custom name defined. Please define one using §6/pmsall <name>");
+        if(CustomMessageGlobalCommand.playerMap.get(player) == null){
+            sender.sendMessage(CansteinGottesdienst.PREFIX + "§cNo custom name defined. Please define one using §6/pmsglobal <name>");
             return true;
         }
 
@@ -63,7 +61,7 @@ public class CustomPrivateMessageCommand implements CommandExecutor {
             return true;
         }
 
-        p.sendMessage(Placeholder.replace(messageTemplate, "player", CustomMessageAllCommand.playerMap.get(player))
+        p.sendMessage(Placeholder.replace(messageTemplate, "player", CustomMessageGlobalCommand.playerMap.get(player))
                 + format(String.join(" ", Arrays.copyOfRange(args,  1, args.length))));
 
         return true;

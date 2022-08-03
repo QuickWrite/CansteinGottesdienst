@@ -19,12 +19,15 @@ commands:
   customItem:
     description: "CustomItem commands"
     usage: "/customItem <id>"
-  pmsg:
+  pmsgPlayer:
     description: "Sends messages as another entity to one other player"
-    usage: "/pmsg <name> <message>"
-  pmsall:
+    usage: "/pmsgPlayer <name> <message>"
+  pmsgAllPlayersWithTheirName:
+    description: "Sends messages as another entity every other player"
+    usage: "/pmsgAllPlayersWithTheirName <name> <message>"
+  pmsglobal:
     description: "Sends messages as another entity to all players"
-    usage: "/pmsall <name> <message>"
+    usage: "/pmsglobal <name> <message>"
   setupmap:
     description: "Command to set up the map"
     usage: "/setupmap"

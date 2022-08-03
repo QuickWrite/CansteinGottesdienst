@@ -16,17 +16,17 @@ import net.quickwrite.cansteingottesdienst.config.MapInformationConfig;
 import net.quickwrite.cansteingottesdienst.items.Items;
 import net.quickwrite.cansteingottesdienst.listener.*;
 import net.quickwrite.cansteingottesdienst.listener.block.BlockInteractListener;
+import net.quickwrite.cansteingottesdienst.meteor.Meteor;
 import net.quickwrite.cansteingottesdienst.rlgl.RedLightGreenLightGame;
 import net.quickwrite.cansteingottesdienst.rlgl.RedLightGreenLightSettings;
 import net.quickwrite.cansteingottesdienst.util.CropInfo;
 import net.quickwrite.cansteingottesdienst.util.storage.Flags;
 import net.quickwrite.cansteingottesdienst.util.storage.WinepressList;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
+import org.bukkit.*;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.command.TabCompleter;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -34,8 +34,10 @@ import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.RecipeChoice;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public final class CansteinGottesdienst extends JavaPlugin {
 
@@ -49,6 +51,12 @@ public final class CansteinGottesdienst extends JavaPlugin {
     private RedLightGreenLightGame raceGame;
     private MapInformationConfig mapInformationConfig;
     private DefaultConfig config;
+
+    //Meteor
+    public static Particle particle1, particle2, particle3;
+    public static int amount1, amount2, amount3, liveTime, radius, minTime, maxTime, timeInterval, minY, maxY, stepAmount, minimumExistY;
+    public static double chance, minSpeed, maxSpeed, size, angle;
+    public static boolean liveUntilSomeY;
 
     @Override
     public void onLoad() {
@@ -81,10 +89,13 @@ public final class CansteinGottesdienst extends JavaPlugin {
         registerCommand("customblock", new CustomBlockCommand(), new CustomBlockCommandTabCompleter());
         registerCommand("initMap", new InitMapCommand(), null);
         registerCommand("customItem", new CustomItemCommand(), new CustomItemCommandTabCompleter());
-        registerCommand("pmsg", new CustomPrivateMessageCommand(), null);
-        registerCommand("pmsall", new CustomMessageAllCommand(), null);
         registerCommand("trackerMap", new TrackerMapCommand(), new TrackerMapCommandTabCompleter());
         registerCommand("setupmap", new MapInformationCommand(), null);
+
+        registerCommand("pmsglobal", new CustomMessageGlobalCommand(), null);
+        registerCommand("pmsgPlayer", new CustomPrivateMessageToPlayerCommand(), null);
+        registerCommand("pmsgAllPlayersWithTheirName", new CustomPrivateMessageToAllPlayersCommand(), null);
+
 
         // register EventListener
         PluginManager pluginManager = getServer().getPluginManager();
@@ -98,6 +109,57 @@ public final class CansteinGottesdienst extends JavaPlugin {
         pluginManager.registerEvents(new WinepressJumpListener(), this);
 
         initializeRecipes();
+
+        loadMeteor();
+    }
+
+    private void loadMeteor() {
+        FileConfiguration config = getConfig();
+        if(config.contains("meteor")){
+            particle1 = Particle.valueOf(config.getString("meteor.particle1.type"));
+            particle2 = Particle.valueOf(config.getString("meteor.particle2.type"));
+            particle3 = Particle.valueOf(config.getString("meteor.particle2.type"));
+            amount1 = config.getInt("meteor.particle1.amount");
+            amount2 = config.getInt("meteor.particle2.amount");
+            amount3 = config.getInt("meteor.particle3.amount");
+
+            chance = config.getDouble("meteor.chance");
+            liveTime = config.getInt("meteor.liveTime");
+            liveUntilSomeY = config.getBoolean("meteor.liveUntilGround");
+            minimumExistY = config.getInt("meteor.minExistY");
+            radius = config.getInt("meteor.radius");
+            minTime = config.getInt("meteor.minTime");
+            maxTime = config.getInt("meteor.maxTime");
+            timeInterval = config.getInt("meteor.spawnCheck");
+            minY = config.getInt("meteor.minY");
+            maxY = config.getInt("meteor.maxY");
+            minSpeed = config.getDouble("meteor.minSpeed");
+            maxSpeed = config.getDouble("meteor.maxSpeed");
+            size = config.getDouble("meteor.size");
+            stepAmount = config.getInt("meteor.stepAmount");
+            angle = config.getInt("meteor.angle");
+        }
+
+
+        Random random = new Random();
+        new BukkitRunnable(){
+
+            @Override
+            public void run() {
+                for(World w : Bukkit.getWorlds()){
+                    if(w.getPlayers().size() > 0) {
+                        if (w.getTime() > minTime && w.getTime() < maxTime) {
+                            if (Math.random() < chance) {
+                                Player p = w.getPlayers().get(random.nextInt(w.getPlayers().size()));
+                                new Meteor(p.getLocation().add(random.nextInt(radius * 2) - radius, random.nextInt(radius * 2) - radius, random.nextInt(radius * 2) - radius), random.nextInt((int) (maxSpeed * 100 - minSpeed * 100)) / 100.0 + minSpeed).start();
+                            }
+                        }
+                    }
+                }
+            }
+
+        }.runTaskTimer(this, 0, timeInterval);
+
     }
 
     public void registerCommand(String name, CommandExecutor executor, TabCompleter tabCompleter){

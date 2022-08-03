@@ -17,3 +17,29 @@ pmsg:
 winepress:
   grapes_hologram: "%current% / %max% Trauben"
   jump_hologram: "%jumps% / %needed_jumps% Sprünge"
+
+meteor:
+  particle1:
+    type: FLAME
+    amount: 10
+  particle2:
+    type: SMOKE_LARGE
+    amount: 1
+  particle3:
+    type: LAVA
+    amount: 1
+  chance: 0.3
+  liveUntilSomeY: false
+  minExistY: true
+  liveTime: 2300
+  radius: 100
+  minTime: 12300
+  maxTime: 23850
+  spawnCheck: 60
+  minY: 200
+  maxY: 255
+  minSpeed: 0.5
+  maxSpeed: 1.0
+  size: 1.0
+  stepAmount: 5
+  angle: 0.1
